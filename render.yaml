@@ -1,0 +1,60 @@
+# Render Blueprint — deploys the SCAS backend + a managed Postgres.
+#
+# Usage: on render.com, "New +" -> "Blueprint" -> connect this repo.
+# Render reads this file and provisions both services below in one go.
+#
+# The frontend (Flutter web) is deployed SEPARATELY as a Render Static
+# Site, not from this Blueprint — its build must bake in the backend's
+# public URL via --dart-define, which only exists after the backend
+# below is live. See DEPLOYMENT.md for the exact steps.
+
+services:
+  - type: web
+    name: scas-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      # Set this AFTER the frontend static site exists, to its real
+      # URL (e.g. https://scas-frontend.onrender.com) — see
+      # DEPLOYMENT.md step 4. Comma-separated if you need more than one.
+      - key: ALLOWED_ORIGINS
+        value: http://localhost
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRE_MINUTES
+        value: "1440"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: scas-db
+          property: connectionString
+      - key: OPEN_METEO_BASE_URL
+        value: https://api.open-meteo.com/v1
+      - key: GEOCODING_BASE_URL
+        value: https://geocoding-api.open-meteo.com/v1/search
+      - key: WEATHER_CACHE_TTL_SECONDS
+        value: "1800"
+      - key: UPLOAD_DIRECTORY
+        value: /app/storage/uploads
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "10"
+      - key: OCR_CONFIDENCE_THRESHOLD
+        value: "0.85"
+      # MODEL_PATH / LABEL_ENCODER_PATH / FEATURE_SCHEMA_PATH /
+      # AGRONOMIC_RULES_PATH / FERTILIZER_KB_PATH are already set as
+      # image-level ENV defaults in backend/Dockerfile — no need to
+      # repeat them here.
+
+databases:
+  - name: scas-db
+    plan: free
+    databaseName: scas_db
+    user: scas_user
