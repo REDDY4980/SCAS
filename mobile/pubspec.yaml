@@ -1,0 +1,47 @@
+name: scas_mobile
+description: Smart Crop Advisory System — Flutter client (AIB v1.0 Vol 13)
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management — AIB Vol 13.4 preferred
+  flutter_riverpod: ^2.5.1
+
+  # API communication — AIB Vol 13.6
+  dio: ^5.4.3
+
+  # Secure local storage — AIB Vol 13.7
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.2.3
+
+  # Routing
+  go_router: ^14.2.0
+
+  # File upload — AIB Vol 13.8
+  image_picker: ^1.1.2
+  file_picker: ^8.0.6
+
+  # Silent GPS resolution for farm location (wraps the browser
+  # Geolocation API on web) — farmers never see or type coordinates.
+  geolocator: ^13.0.2
+
+  cupertino_icons: ^1.0.8
+
+  # Typography matching the reference design (rounded, friendly sans-serif)
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

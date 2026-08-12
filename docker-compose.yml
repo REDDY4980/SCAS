@@ -1,0 +1,89 @@
+name: scas
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: scas_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-scas_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-scas_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - scas_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scas_user} -d ${POSTGRES_DB:-scas_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - scas_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scas_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-scas_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-scas_db}
+      # AgronomicRuleEngine's own repo-relative path resolution assumes
+      # it's running outside Docker (see app/rules/agronomic_rules.py) —
+      # inside the container that traversal overshoots past /app, so the
+      # correct path is supplied explicitly here to match the bind mount
+      # below.
+      AGRONOMIC_RULES_PATH: /app/datasets/agronomic_rules/agronomic_rules_v1.json
+      FERTILIZER_KB_PATH: /app/datasets/fertilizer_knowledge_base/fertilizer_knowledge_base_v1.json
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - scas_uploads:/app/storage/uploads
+      - scas_logs:/app/storage/logs
+      # Bind-mount the REAL trained model artifacts produced in Phase 6
+      # (ml/artifacts/model.joblib etc., already in this repo) rather
+      # than an empty named Docker volume. A named volume starts empty
+      # on first `docker compose up`, which would leave
+      # InferenceEngine.load() with nothing to load and every
+      # /recommendation request failing until someone manually seeded
+      # it — read-only bind mount avoids that failure mode entirely.
+      - ./ml/artifacts:/app/ml/artifacts:ro
+      # Same rationale as ml/artifacts above, for the agronomic rule set
+      # (datasets/agronomic_rules/agronomic_rules_v1.json) that
+      # AgronomicRuleEngine loads at request time.
+      - ./datasets:/app/datasets:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - scas_network
+
+  # Optional development-only DB admin UI. Not started by default;
+  # run with: docker compose --profile dev up pgadmin
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: scas_pgadmin
+    restart: unless-stopped
+    profiles: ["dev"]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@scas.local
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-devonly}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - scas_network
+
+networks:
+  scas_network:
+    driver: bridge
+
+volumes:
+  scas_postgres_data:
+  scas_uploads:
+  scas_logs:

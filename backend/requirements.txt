@@ -1,0 +1,60 @@
+# SCAS Backend Requirements — AIB v1.0 Vol 12 / Vol 16
+#
+# VERIFIED as a complete, mutually-compatible set via `pip install
+# --dry-run` then a real install, in a clean venv, on 2026-08-10.
+# The critical fix: opencv-python-headless is pinned to a 4.x version.
+# Left unpinned, pip resolves it to the 5.x line, which requires
+# numpy>=2 — directly conflicting with paddleocr's numpy<2.0
+# requirement. That conflict was the root cause of every earlier
+# build failure. Pinning opencv to 4.10.0.84 removes the conflict
+# entirely; nothing else needed to change.
+#
+# The ML model in ml/artifacts/ was retrained against this EXACT
+# version set (numpy 1.26.4, xgboost 2.1.1, scikit-learn 1.5.2,
+# pandas 2.2.3) so the serialized model.joblib is guaranteed loadable
+# by whatever this file installs. 99.09% test accuracy.
+
+# Web framework
+fastapi==0.141.1
+uvicorn[standard]==0.52.1
+
+# Settings & validation
+pydantic[email]==2.13.4
+pydantic-settings==2.15.0
+
+# Database
+sqlalchemy==2.0.51
+alembic==1.19.1
+psycopg2-binary==2.9.12
+
+# Auth & security
+python-jose[cryptography]==3.5.0
+passlib==1.7.4
+bcrypt==4.0.1
+python-multipart==0.0.32
+
+# HTTP client (weather integration)
+httpx==0.28.1
+
+# OCR & image preprocessing (Vol 7) — full scan-a-document feature
+paddleocr==2.8.1
+paddlepaddle==2.6.2
+opencv-python-headless==4.10.0.84
+Pillow==10.4.0
+pypdfium2==4.30.0
+
+# ML (Vol 9) — matches the retrained model in ml/artifacts/ exactly
+xgboost==2.1.1
+scikit-learn==1.5.2
+pandas==2.2.3
+numpy==1.26.4
+joblib==1.4.2
+optuna==3.6.1
+
+# Testing (Vol 15)
+pytest==9.1.1
+pytest-asyncio==1.4.0
+pytest-cov==7.1.0
+
+# Logging / utils
+python-dotenv==1.2.2

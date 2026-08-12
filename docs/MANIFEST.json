@@ -1,0 +1,38 @@
+{
+  "project": "SCAS",
+  "full_name": "Smart Crop Advisory System",
+  "package_version": "1.0",
+  "status": "pre-implementation resource gate resolved",
+  "requirements": [
+    {
+      "id": 1,
+      "name": "Crop recommendation training dataset",
+      "status": "resolved"
+    },
+    {
+      "id": 2,
+      "name": "Fertilizer knowledge base",
+      "status": "resolved"
+    },
+    {
+      "id": 3,
+      "name": "Agronomic rule set",
+      "status": "resolved"
+    },
+    {
+      "id": 4,
+      "name": "Real farmer soil reports for OCR calibration",
+      "status": "resolved"
+    }
+  ],
+  "working_defaults": {
+    "platform": "Android + iOS Flutter",
+    "ml_dataset": "public starter dataset",
+    "weather_primary": "Open-Meteo",
+    "weather_fallback": "OpenWeatherMap",
+    "deployment": "local Docker first",
+    "flutter_state": "Riverpod",
+    "git_workflow": "review then commit"
+  },
+  "secrets_included": false
+}

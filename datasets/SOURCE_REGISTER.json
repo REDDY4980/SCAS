@@ -1,0 +1,50 @@
+[
+  {
+    "id": "SHC-KA-2017",
+    "type": "real farmer-specific Soil Health Card reproduced in official educational material",
+    "state": "Karnataka",
+    "institution": "Department of Agriculture, Karnataka Government / Soil Health Centre, Bagalkote; public host PSSCIVE/NCERT",
+    "source_url": "https://www.psscive.ac.in/storage/uploads/textbooks/pdf/english/soil-water-testing-labortory-assistant-english-class-%2012.pdf",
+    "pages": "PDF pages 82–85 (printed pages 76–79)",
+    "collection_date": "2017-09-10",
+    "report_period": "",
+    "why_selected": "Actual filled Karnataka SHC with 12 soil-test parameters, ratings, farm/irrigation context and crop-wise fertilizer recommendations.",
+    "privacy_action": "Farmer name, address, mobile number, SHC number and GPS redacted."
+  },
+  {
+    "id": "SHC-TASAR-2017",
+    "type": "real farmer-specific Soil Health Cards reproduced by a Government of India institution",
+    "state": "Chhattisgarh examples",
+    "institution": "Central Tasar Research and Training Institute, Central Silk Board, Ministry of Textiles, Government of India",
+    "source_url": "https://www.btsso.org/uploaded/details/ps1523865642375g.pdf",
+    "pages": "4 filled SHC pages in source",
+    "collection_date": "2017-11-18 sample received; 2017-12-28 report",
+    "report_period": "",
+    "why_selected": "Real filled cards with 12 parameters, ratings, micronutrient deficiencies and fertilizer recommendations; different layout from Karnataka SHC.",
+    "privacy_action": "Farmer names, village/address and card-identifying details redacted."
+  },
+  {
+    "id": "SHC-TASAR-2017-ALT",
+    "type": "real farmer-specific Soil Health Cards reproduced by a Government of India institution",
+    "state": "Odisha / Mayurbhanj examples",
+    "institution": "Central Tasar Research and Training Institute, Central Silk Board, Ministry of Textiles, Government of India",
+    "source_url": "https://www.btsso.org/uploaded/details/ps1523863886355g33.pdf",
+    "pages": "multiple filled SHC pages",
+    "collection_date": "",
+    "report_period": "",
+    "why_selected": "Second Central Silk Board field set; useful as an external layout/value reference.",
+    "privacy_action": "Source listed for human review; not redistributed in the primary OCR pack."
+  },
+  {
+    "id": "SHC-2025-AP-EXTERNAL",
+    "type": "recent farmer-specific soil test report found publicly online",
+    "state": "Andhra Pradesh, East Godavari",
+    "institution": "Soil Testing Lab, Rajahmundry (identified in public document)",
+    "source_url": "https://www.scribd.com/document/978763314/Soil-Test-Report",
+    "pages": "",
+    "collection_date": "",
+    "report_period": "2025-01-15 to 2025-02-04",
+    "why_selected": "Recent 2025 example with three samples for one farmer and 12 soil-test parameters; useful for demonstrating real-world layout/value variation.",
+    "privacy_action": "Not redistributed because the public copy contains direct personal identifiers."
+  }
+]

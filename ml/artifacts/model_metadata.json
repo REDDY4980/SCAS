@@ -1,0 +1,78 @@
+{
+  "model_version": "20260810_071347",
+  "trained_at": "2026-08-10T07:13:47.301145+00:00",
+  "algorithm": "XGBoost (multi:softprob)",
+  "random_seed": 42,
+  "dataset": {
+    "source": "Kaggle Crop Recommendation Dataset (Requirement 1 starter dataset)",
+    "sha256": "808e1d84a544647f1ab2fdae04f434b1842692d6be09eee18a5c2d43eb78d77c",
+    "rows": 2200,
+    "classes": 22,
+    "class_names": [
+      "apple",
+      "banana",
+      "blackgram",
+      "chickpea",
+      "coconut",
+      "coffee",
+      "cotton",
+      "grapes",
+      "jute",
+      "kidneybeans",
+      "lentil",
+      "maize",
+      "mango",
+      "mothbeans",
+      "mungbean",
+      "muskmelon",
+      "orange",
+      "papaya",
+      "pigeonpeas",
+      "pomegranate",
+      "rice",
+      "watermelon"
+    ]
+  },
+  "hyperparameters": {
+    "learning_rate": 0.03574712922600244,
+    "max_depth": 10,
+    "n_estimators": 233,
+    "subsample": 0.8394633936788146,
+    "colsample_bytree": 0.6624074561769746,
+    "gamma": 0.7799726016810132,
+    "min_child_weight": 1
+  },
+  "optuna_trials": 20,
+  "metrics": {
+    "cv_train_accuracy_mean": 0.9948863636363636,
+    "cv_train_accuracy_std": 0.0021259416970306733,
+    "validation_accuracy": 0.9954545454545455,
+    "validation_precision_macro": 0.9958677685950413,
+    "validation_recall_macro": 0.9954545454545454,
+    "validation_f1_macro": 0.9954431533378901,
+    "test_accuracy": 0.990909090909091,
+    "test_precision_macro": 0.9917355371900828,
+    "test_recall_macro": 0.9909090909090907,
+    "test_f1_macro": 0.9908863066757803,
+    "test_inference_latency_ms_per_sample": 0.03460353636367844
+  },
+  "feature_importance": {
+    "N": 0.13519005477428436,
+    "P": 0.1608971804380417,
+    "K": 0.15230338275432587,
+    "temperature": 0.12131819128990173,
+    "humidity": 0.1651850938796997,
+    "ph": 0.10769575834274292,
+    "rainfall": 0.15741026401519775
+  },
+  "feature_order": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ],
+  "warning": "This model is trained on Requirement 1's public starter dataset, not proprietary field-collected data. See datasets/crop_recommendation/ README for details. Do not present these metrics as validated against real Indian farm conditions."
+}

@@ -1,0 +1,41 @@
+{
+  "rows": 2200,
+  "columns": 8,
+  "missing_values": {
+    "N": 0,
+    "P": 0,
+    "K": 0,
+    "temperature": 0,
+    "humidity": 0,
+    "ph": 0,
+    "rainfall": 0,
+    "label": 0
+  },
+  "duplicate_rows": 0,
+  "classes": 22,
+  "class_counts": {
+    "apple": 100,
+    "banana": 100,
+    "blackgram": 100,
+    "chickpea": 100,
+    "coconut": 100,
+    "coffee": 100,
+    "cotton": 100,
+    "grapes": 100,
+    "jute": 100,
+    "kidneybeans": 100,
+    "lentil": 100,
+    "maize": 100,
+    "mango": 100,
+    "mothbeans": 100,
+    "mungbean": 100,
+    "muskmelon": 100,
+    "orange": 100,
+    "papaya": 100,
+    "pigeonpeas": 100,
+    "pomegranate": 100,
+    "rice": 100,
+    "watermelon": 100
+  },
+  "sha256": "808e1d84a544647f1ab2fdae04f434b1842692d6be09eee18a5c2d43eb78d77c"
+}

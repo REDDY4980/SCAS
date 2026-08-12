@@ -1,0 +1,9 @@
+rule_area,coverage,evidence_status,SCAS_action
+SHC N/P/K/OC classification,National,Authoritative government source,Implement
+Rice pH preferred range,Crop-specific,Authoritative agricultural university source,"Implement as warning/rerank, not hard reject"
+Karnataka zones 3–7 STCR availability,Regional,UAS Bengaluru,Implement lookup architecture
+Karnataka red/black soil N/P/Zn constraint,Regional,ICAR,Implement contextual warning
+Ragi,Karnataka-specific context available,UAS Bengaluru; exact rule depends on zone/package,Use regional context; add crop-specific rule when exact source is attached
+Groundnut,Karnataka-specific context available,UAS Bengaluru,Use regional context; fertilizer rule in Requirement 2
+Maize,General crop-production sources available,TNAU/UASB,Add exact crop-zone rule after source validation
+Remaining 22 ML crops,Incomplete,No rule invented,Use model + uncertainty penalty until validated

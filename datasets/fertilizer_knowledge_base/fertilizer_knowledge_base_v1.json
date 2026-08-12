@@ -1,0 +1,175 @@
+{
+  "name": "SCAS Fertilizer Knowledge Base - Starter v1",
+  "purpose": "Authoritative, traceable starter knowledge for the SCAS fertilizer engine.",
+  "status": "STARTER / SOURCE-TRACEABLE — not a universal fertilizer prescription engine",
+  "priority_rule": [
+    "Use soil-test/STCR recommendations when available.",
+    "Use state/crop/region-specific package-of-practice recommendations when STCR is unavailable.",
+    "Never present a blanket dose as universally valid.",
+    "Every recommendation returned to a farmer must retain crop, region/condition, source, unit and confidence/explanation metadata."
+  ],
+  "government_reference": {
+    "soil_health_card": "https://soilhealth.dac.gov.in/files/SHC_API_Integration_Guidelines.pdf",
+    "soil_health_faq": "https://soilhealth.dac.gov.in/files/FAQ_Final_English.pdf",
+    "recommended_inm_packages": "https://soilhealth.dac.gov.in/files/portal/Recommended%20INM%20Packages%20-1.pdf"
+  },
+  "karnataka_reference": {
+    "uasb_stcr": "https://www.uasbangalore.edu.in/en/soil-test-and-crop-response-ss-ac-gkvk-bengaluru/",
+    "uasb_reports": "https://www.uasbangalore.edu.in/en/reports/"
+  },
+  "fertilizers": [
+    {
+      "fertilizer": "Urea",
+      "grade": "46-0-0",
+      "N_percent": 46.0,
+      "P2O5_percent": 0.0,
+      "K2O_percent": 0.0,
+      "primary_use": "Nitrogen source",
+      "source": "Government of India / fertilizer-sector references; fertilizer-grade urea is 46% nitrogen.",
+      "source_note": "Composition is a product-grade fact; application dosage must come from crop/region/soil recommendations, not from this catalog alone."
+    },
+    {
+      "fertilizer": "DAP",
+      "grade": "18-46-0",
+      "N_percent": 18.0,
+      "P2O5_percent": 46.0,
+      "K2O_percent": 0.0,
+      "primary_use": "Nitrogen + phosphorus source",
+      "source": "Department of Fertilizers / Government of India fertilizer references",
+      "source_note": "Indian fertilizer specifications identify DAP as 18-46-0; crop dosage must be derived from soil/crop recommendations."
+    },
+    {
+      "fertilizer": "MOP",
+      "grade": "0-0-60",
+      "N_percent": 0.0,
+      "P2O5_percent": 0.0,
+      "K2O_percent": 60.0,
+      "primary_use": "Potassium source",
+      "source": "Department of Fertilizers / Government of India fertilizer references",
+      "source_note": "Government fertilizer documentation lists MOP as 0-0-60; crop dosage must be derived from soil/crop recommendations."
+    },
+    {
+      "fertilizer": "SSP",
+      "grade": "0-16-0 (typical grade; verify product label)",
+      "N_percent": 0.0,
+      "P2O5_percent": 16.0,
+      "K2O_percent": 0.0,
+      "primary_use": "Phosphorus + secondary sulphur source",
+      "source": "Use only when the applicable Indian fertilizer specification/product label is verified.",
+      "source_note": "Do not treat this grade as universal across products; SCAS should store verified product-grade data separately."
+    },
+    {
+      "fertilizer": "Zinc Sulphate",
+      "grade": "Micronutrient fertilizer; product formulation varies",
+      "primary_use": "Zinc correction",
+      "source": "Government/State agricultural recommendations",
+      "source_note": "Dosage is deficiency- and crop-specific. SCAS must not infer a universal dose from the catalog."
+    },
+    {
+      "fertilizer": "Gypsum",
+      "grade": "Calcium sulphate; grade varies",
+      "primary_use": "Sulphur/calcium source and crop-specific amendment",
+      "source": "State agricultural recommendations",
+      "source_note": "Use only under crop/soil-specific recommendation; avoid universal dosage."
+    }
+  ],
+  "crop_recommendations": [
+    {
+      "crop": "Ragi (Finger millet)",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "Rainfed general package-of-practice recommendation",
+      "N_kg_ha": 50,
+      "P2O5_kg_ha": 40,
+      "K2O_kg_ha": 25,
+      "fertilizer_products": [
+        "Urea",
+        "DAP/SSP as phosphorus source",
+        "MOP as potassium source"
+      ],
+      "source": "University of Agricultural Sciences, GKVK Bengaluru; Mysore Journal of Agricultural Sciences",
+      "source_url": "https://www.uasbangalore.edu.in/images/2021-2nd-Issue/10.pdf",
+      "caution": "This is a regional general recommendation, not a universal prescription. Prefer soil-test/STCR recommendations when available."
+    },
+    {
+      "crop": "Groundnut",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "General recommended dose cited by UAS Bengaluru ARS Chintamani",
+      "N_kg_ha": 25,
+      "P2O5_kg_ha": 50,
+      "K2O_kg_ha": 25,
+      "fertilizer_products": [
+        "DAP",
+        "MOP",
+        "Gypsum"
+      ],
+      "source": "University of Agricultural Sciences, Bengaluru, ARS Chintamani",
+      "source_url": "https://www.uasbangalore.edu.in/en/ars-chintamani/",
+      "caution": "UAS source also discusses biofertilizer and micronutrient options. Soil-test/STCR recommendation should take precedence."
+    },
+    {
+      "crop": "Maize",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "Package-of-practice control cited in UAS Bengaluru research",
+      "N_kg_ha": 150,
+      "P2O5_kg_ha": 75,
+      "K2O_kg_ha": 40,
+      "fertilizer_products": [
+        "Urea",
+        "DAP/SSP",
+        "MOP"
+      ],
+      "source": "University of Agricultural Sciences, GKVK Bengaluru",
+      "source_url": "https://www.uasbangalore.edu.in/images/2016-2st-Issue/22.pdf",
+      "caution": "This is a package-of-practice reference from a specific Karnataka research context. Targeted-yield/STCR equations can produce different doses."
+    },
+    {
+      "crop": "Hybrid Paddy",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "Modified fertilizer dose for hybrid paddy",
+      "N_kg_ha": 120,
+      "P2O5_kg_ha": 60,
+      "K2O_kg_ha": 60,
+      "fertilizer_products": [
+        "Urea",
+        "DAP/SSP",
+        "MOP"
+      ],
+      "source": "University of Agricultural Sciences, Bengaluru technologies developed for inclusion in Package of Practices",
+      "source_url": "https://www.uasbangalore.edu.in/wp-content/uploads/2024/10/Technologies-developed-by-UASB-for-inclusion-in-PoP-2000-2023.pdf",
+      "caution": "The source specifies split application and crop context; SCAS should preserve those conditions rather than presenting a single blanket dose."
+    },
+    {
+      "crop": "Cowpea",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "Recommended nutrient dose cited by UAS Bengaluru Arid Legumes programme",
+      "N_kg_ha": 25,
+      "P2O5_kg_ha": 50,
+      "K2O_kg_ha": 25,
+      "fertilizer_products": [
+        "Urea",
+        "DAP/SSP",
+        "MOP"
+      ],
+      "source": "University of Agricultural Sciences, GKVK Bengaluru",
+      "source_url": "https://www.uasbangalore.edu.in/en/arid-legumes-zars-gkvk-bengaluru/",
+      "caution": "Soil-test-based recommendations and crop-specific conditions should take precedence."
+    },
+    {
+      "crop": "Horse gram",
+      "region": "Karnataka / UAS Bengaluru context",
+      "condition": "Recommended nutrient dose cited by UAS Bengaluru Arid Legumes programme",
+      "N_kg_ha": 25,
+      "P2O5_kg_ha": 38,
+      "K2O_kg_ha": 25,
+      "fertilizer_products": [
+        "Urea",
+        "DAP/SSP",
+        "MOP"
+      ],
+      "source": "University of Agricultural Sciences, GKVK Bengaluru",
+      "source_url": "https://www.uasbangalore.edu.in/en/arid-legumes-zars-gkvk-bengaluru/",
+      "caution": "Soil-test-based recommendations and crop-specific conditions should take precedence."
+    }
+  ],
+  "coverage_note": "This starter catalog deliberately does not fabricate fertilizer rules for all 22 ML crops. Additional crop/state/soil rules must be added from traceable agricultural sources before those crops are exposed to production fertilizer recommendations."
+}
