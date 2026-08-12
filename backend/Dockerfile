@@ -30,6 +30,21 @@ COPY backend/ .
 COPY ml/artifacts ./ml/artifacts
 COPY datasets ./datasets
 
+# PaddleOCR's own first-use auto-downloader (det/cls/rec model weights,
+# ~16MB, from PaddlePaddle's CDN) is unreliable in this environment —
+# reproduced twice: it either takes several minutes on a slow link (an
+# earlier local-dev incident, see git history) or produces a truncated/
+# corrupted file that crashes on load ("munmap_chunk(): invalid
+# pointer" / "free(): invalid pointer", both observed testing this
+# exact image). On a host with no persistent disk (e.g. Render's free
+# tier, which starts empty on every cold start after the service
+# sleeps), that isn't a one-time cost — it repeats on every wake-up and
+# reliably exceeds the app's client-side OCR timeout. Shipping the
+# already-downloaded, already-verified-working files directly avoids
+# the flaky downloader entirely rather than retrying it at a different
+# point in the container lifecycle.
+COPY ml/paddleocr_models/whl /root/.paddleocr/whl
+
 RUN mkdir -p /app/storage/uploads /app/storage/logs
 
 ENV PYTHONUNBUFFERED=1 \

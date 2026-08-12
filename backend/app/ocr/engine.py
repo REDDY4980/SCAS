@@ -53,6 +53,10 @@ class OCREngine(ABC):
     def extract(self, image: np.ndarray) -> OCRPageResult:
         """Runs OCR on a single pre-processed image and returns detected lines."""
 
+    def warm_up(self) -> None:
+        """Optional: force any lazy model load to happen now. No-op by
+        default (e.g. test doubles have nothing to warm up)."""
+
 
 class PaddleOCREngine(OCREngine):
     """
@@ -100,6 +104,23 @@ class PaddleOCREngine(OCREngine):
                     )
                 )
         return OCRPageResult(lines=lines)
+
+    def warm_up(self) -> None:
+        """
+        Forces the lazy PaddleOCR load to happen now rather than on the
+        first real request. Must be called from within the actual
+        server process (e.g. FastAPI's lifespan startup) — instantiating
+        PaddleOCR in a separate short-lived `python3 -c "..."` process
+        (a Dockerfile RUN step, or a standalone entrypoint.sh warm-up
+        step) reliably crashes here ("free(): invalid pointer" /
+        "munmap_chunk(): invalid pointer"), reproduced repeatedly
+        against this exact image, while the identical call succeeds
+        every time inside the long-lived uvicorn worker process. The
+        cause wasn't pinned down further than that process-identity
+        difference, but the fix is simple: only ever warm this up from
+        inside the process that will actually serve requests.
+        """
+        self._get_ocr()
 
     @classmethod
     def shared(cls) -> "PaddleOCREngine":

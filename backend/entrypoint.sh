@@ -29,5 +29,11 @@ PYEOF
 echo "[entrypoint] Running Alembic migrations..."
 alembic upgrade head
 
+# PaddleOCR is warmed up inside app/main.py's FastAPI lifespan startup,
+# not here — a separate `python3 -c "..."` subprocess reliably crashes
+# loading it (reproduced repeatedly against this exact image), while
+# the identical call succeeds every time inside the actual uvicorn
+# worker process below. See app/ocr/engine.py's warm_up() docstring.
+
 echo "[entrypoint] Starting SCAS backend..."
 exec uvicorn app.main:app --host 0.0.0.0 --port 8000
