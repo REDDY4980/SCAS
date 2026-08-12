@@ -18,12 +18,6 @@ class FertilizerItem {
     required this.source,
   });
 
-  /// Vol 11.9: a fallback-path item always says "not available" in its
-  /// dosage text (Phase 8's central safety property) — surfaced here so
-  /// the UI can render it with a distinct, honest visual treatment
-  /// rather than looking identical to a sourced kg/ha number.
-  bool get hasSourcedDosage => !dosage.toLowerCase().contains('not available');
-
   factory FertilizerItem.fromJson(Map<String, dynamic> json) {
     return FertilizerItem(
       fertilizerName: json['fertilizer_name'] as String,

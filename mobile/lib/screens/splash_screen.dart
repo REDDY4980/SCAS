@@ -26,7 +26,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Vol 6.8: "Session restored at app launch after validation."
-      await ref.read(authProvider.notifier).restoreSession();
+      // Skipped if already authenticated: the router's redirect logic
+      // (app_router.dart) detours back through splash while it waits to
+      // learn whether a just-logged-in farmer has any farms yet — that
+      // isn't a fresh boot, so re-validating the session here would be
+      // a redundant network call and a spurious AuthLoading blip.
+      if (ref.read(authProvider) is! AuthAuthenticated) {
+        await ref.read(authProvider.notifier).restoreSession();
+      }
       if (mounted) setState(() => _sessionChecked = true);
     });
   }

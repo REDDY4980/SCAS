@@ -22,9 +22,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-_MACRO_THRESHOLDS = {
+MACRO_THRESHOLDS = {
     # (low_upper_bound_exclusive, medium_upper_bound_exclusive) — same
     # source as app/rules/agronomic_rules.py's soil-status classification.
+    # Public (not module-private): app/rules/fertilizer_selector.py's
+    # calculated-dosage fallback reuses the low_bound as the "target
+    # sufficiency level" a deficient farm needs to be brought up to.
     "nitrogen": (280, 560),
     "phosphorus": (10, 25),
     "potassium": (120, 280),
@@ -39,6 +42,10 @@ class DeficiencyProfile:
     classifications: dict[str, str] = field(default_factory=dict)  # "low" | "medium" | "high"
     deficient_macro_nutrients: list[str] = field(default_factory=list)
     unclassified_values: dict[str, float] = field(default_factory=dict)
+    # Raw measured macro-nutrient levels (kg/ha), keyed the same as
+    # classifications — the fertilizer selector's calculated-dosage
+    # fallback needs the actual number, not just its Low/Medium/High band.
+    macro_values: dict[str, float] = field(default_factory=dict)
 
 
 class DeficiencyDetector:
@@ -47,11 +54,13 @@ class DeficiencyDetector:
     def analyze(self, soil: dict[str, float | None]) -> DeficiencyProfile:
         classifications: dict[str, str] = {}
         deficient: list[str] = []
+        macro_values: dict[str, float] = {}
 
-        for nutrient, (low_bound, medium_bound) in _MACRO_THRESHOLDS.items():
+        for nutrient, (low_bound, medium_bound) in MACRO_THRESHOLDS.items():
             value = soil.get(nutrient)
             if value is None:
                 continue
+            macro_values[nutrient] = value
             if value < low_bound:
                 classifications[nutrient] = "low"
                 deficient.append(nutrient)
@@ -68,4 +77,5 @@ class DeficiencyDetector:
             classifications=classifications,
             deficient_macro_nutrients=deficient,
             unclassified_values=unclassified,
+            macro_values=macro_values,
         )

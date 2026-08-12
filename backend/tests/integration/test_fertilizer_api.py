@@ -120,13 +120,12 @@ def test_generate_fertilizer_recommendation(client, auth_headers, recommendation
     assert len(data["fertilizers"]) > 0
     assert data["knowledge_base_coverage"] in ("sourced", "fallback")
 
-    # No entry should ever contain a fabricated bare number-only dosage
-    # when the crop is uncovered — either a real sourced kg/ha figure
-    # (if the predicted crop happens to be maize) or an explicit
-    # "not available" fallback message.
+    # An uncovered crop still gets a real number now — a calculated
+    # nutrient-replacement dosage — but it must always be clearly
+    # labeled as calculated, never presented as a sourced KB figure.
     for f in data["fertilizers"]:
         if data["knowledge_base_coverage"] == "fallback" and f["fertilizer_name"] != "None required":
-            assert "not available" in f["dosage"].lower()
+            assert "calculated" in f["dosage"].lower()
 
 
 def test_generated_recommendation_is_retrievable(client, auth_headers, recommendation_id_low_npk):

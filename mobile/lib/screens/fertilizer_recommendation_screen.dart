@@ -107,10 +107,11 @@ class _FertilizerRecommendationScreenState extends ConsumerState<FertilizerRecom
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'A verified dosage is not yet available for this crop in our '
-                      'knowledge base. The recommendations below tell you which '
-                      'nutrient to address — please consult a local agricultural '
-                      'extension officer for exact quantities.',
+                      'A sourced, crop-specific dose is not yet in our knowledge base for '
+                      'this crop. The dosage below is a calculated nutrient-replacement '
+                      'estimate (deficit ÷ fertilizer nutrient %, scaled to this farm\'s '
+                      'area) — not a government/university-sourced figure. Confirm with a '
+                      'local agricultural extension officer before applying at scale.',
                     ),
                   ),
                 ],
@@ -128,8 +129,8 @@ class _FertilizerRecommendationScreenState extends ConsumerState<FertilizerRecom
                   Row(
                     children: [
                       Icon(
-                        item.hasSourcedDosage ? Icons.check_circle_outline : Icons.help_outline,
-                        color: item.hasSourcedDosage ? Colors.green : Colors.orange,
+                        isFallback ? Icons.calculate_outlined : Icons.check_circle_outline,
+                        color: isFallback ? Colors.orange : Colors.green,
                       ),
                       const SizedBox(width: 8),
                       Expanded(

@@ -64,6 +64,8 @@ class FertilizerService:
                 status.HTTP_400_BAD_REQUEST, "Soil parameters for this recommendation are unavailable."
             )
         params = soil_report.soil_parameters
+        farm = self.farm_repo.get_by_id(rec.farm_id)
+        area_acres = float(farm.area_acres) if farm is not None and farm.area_acres is not None else None
         soil_dict = {
             "nitrogen": params.nitrogen,
             "phosphorus": params.phosphorus,
@@ -77,7 +79,7 @@ class FertilizerService:
         }
 
         deficiency = self.detector.analyze(soil_dict)
-        items = self.selector.select(rec.recommended_crop, deficiency)
+        items = self.selector.select(rec.recommended_crop, deficiency, area_acres=area_acres)
 
         # Idempotent regeneration: clear any prior fertilizer recs for
         # this recommendation before writing the fresh set.

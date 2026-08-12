@@ -93,6 +93,8 @@ class _CropRecommendationScreenState extends ConsumerState<CropRecommendationScr
             ),
           ),
         ),
+        const SizedBox(height: 16),
+        _MarketPriceComingSoonCard(crop: result.primaryCrop),
         const SizedBox(height: 20),
         Text('Top 5 Alternatives', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
@@ -126,6 +128,56 @@ class _CropRecommendationScreenState extends ConsumerState<CropRecommendationScr
           textAlign: TextAlign.center,
         ),
       ],
+    );
+  }
+}
+
+/// Market price trend for the recommended crop — honestly labeled
+/// Coming Soon (same pattern as the dashboard's Disease Scan/Market
+/// quick actions) rather than showing a fabricated graph. A real
+/// integration needs a per-user data.gov.in API key (the public demo
+/// key for the Agmarknet mandi-price resource returns "Key not
+/// authorised" — verified live, not assumed) which requires the
+/// account holder to register for one; nothing free and keyless from a
+/// reliable public source was available to wire up in its place.
+class _MarketPriceComingSoonCard extends StatelessWidget {
+  final String crop;
+  const _MarketPriceComingSoonCard({required this.crop});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Market price trends are coming in a future update.')),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              const Icon(Icons.show_chart_outlined),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Market Price Trend', style: Theme.of(context).textTheme.titleSmall),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${crop[0].toUpperCase()}${crop.substring(1)} mandi prices — coming soon',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              Text('(soon)', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

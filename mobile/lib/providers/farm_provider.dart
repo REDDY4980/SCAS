@@ -12,12 +12,19 @@ class FarmListNotifier extends StateNotifier<AsyncValue<List<Farm>>> {
   }
 
   Future<void> load() async {
-    state = const AsyncValue.loading();
+    // copyWithPrevious, not a bare AsyncValue.loading(): a reload (after
+    // creating/deleting a farm, or pull-to-refresh) must keep hasValue
+    // true with the last-known list while it refetches. app_router.dart's
+    // redirect treats "loading with no value yet" as "still resolving
+    // the very first farms fetch after login" and detours to splash —
+    // without this, every later reload would incorrectly retrigger that
+    // detour and bounce the farmer off whatever screen they're on.
+    state = AsyncValue<List<Farm>>.loading().copyWithPrevious(state);
     try {
       final farms = await _repo.listFarms();
       state = AsyncValue.data(farms);
     } catch (e, st) {
-      state = AsyncValue.error(e, st);
+      state = AsyncValue<List<Farm>>.error(e, st).copyWithPrevious(state);
     }
   }
 

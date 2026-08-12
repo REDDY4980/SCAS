@@ -34,10 +34,21 @@ from app.core.database import get_db
 from app.main import app
 from app.models import Base
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-KARNATAKA_SHC_PDF_PATH = (
-    _REPO_ROOT / "datasets" / "ocr_calibration" / "01_Karnataka_SHC_redacted_2017.pdf"
-)
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+# Locally this file is <repo_root>/backend/tests/conftest.py, so the repo
+# root is two levels up. Docker's `COPY . .` flattens backend/ directly
+# onto /app (see app/rules/agronomic_rules.py for the same issue), so
+# inside a container this file is /app/tests/conftest.py and "two levels
+# up" overshoots to the container root — the bind-mounted datasets/ dir
+# is one level up from THAT, directly under /app. Try both rather than
+# assume either.
+for _root in (_BACKEND_DIR.parent, _BACKEND_DIR):
+    _candidate = _root / "datasets" / "ocr_calibration" / "01_Karnataka_SHC_redacted_2017.pdf"
+    if _candidate.exists():
+        KARNATAKA_SHC_PDF_PATH = _candidate
+        break
+else:
+    KARNATAKA_SHC_PDF_PATH = _BACKEND_DIR.parent / "datasets" / "ocr_calibration" / "01_Karnataka_SHC_redacted_2017.pdf"
 
 _test_engine = create_engine(
     "sqlite:///:memory:",
