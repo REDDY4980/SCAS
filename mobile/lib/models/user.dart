@@ -8,6 +8,13 @@ class UserProfile {
   final String language;
   final String theme;
   final bool notifications;
+  final double? latitude;
+  final double? longitude;
+  final double? locationAccuracyM;
+  final String? locationSource;
+  final DateTime? locationUpdatedAt;
+
+  bool get hasLocation => latitude != null && longitude != null;
 
   const UserProfile({
     required this.id,
@@ -18,6 +25,11 @@ class UserProfile {
     required this.language,
     required this.theme,
     required this.notifications,
+    this.latitude,
+    this.longitude,
+    this.locationAccuracyM,
+    this.locationSource,
+    this.locationUpdatedAt,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -30,6 +42,13 @@ class UserProfile {
       language: (json['language'] as String?) ?? 'en',
       theme: (json['theme'] as String?) ?? 'system',
       notifications: (json['notifications'] as bool?) ?? true,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
+      locationAccuracyM: (json['location_accuracy_m'] as num?)?.toDouble(),
+      locationSource: json['location_source'] as String?,
+      locationUpdatedAt: json['location_updated_at'] == null
+          ? null
+          : DateTime.parse(json['location_updated_at'] as String),
     );
   }
 }

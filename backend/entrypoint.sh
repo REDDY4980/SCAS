@@ -26,6 +26,12 @@ print("[entrypoint] Database unreachable after 30 attempts. Failing fast.")
 sys.exit(1)
 PYEOF
 
+MODEL_FILE="${MODEL_PATH:-/app/ml/artifacts/model.joblib}"
+if [ ! -f "$MODEL_FILE" ]; then
+  echo "[entrypoint] No trained model at $MODEL_FILE - training it now (deterministic, ~1 min)..."
+  (cd /app && python -m ml.training.run_training --trials 20 --out "$(dirname "$MODEL_FILE")")
+fi
+
 echo "[entrypoint] Running Alembic migrations..."
 alembic upgrade head
 

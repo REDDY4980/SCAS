@@ -1,0 +1,486 @@
+{
+  "O1_TC01": {
+    "ocr_status": "success",
+    "ocr_confidence": 0.9075,
+    "soil": {
+      "ph": 7.7,
+      "ec": 0.04,
+      "organic_carbon": 0.35,
+      "nitrogen": 200.6,
+      "phosphorus": 4.19,
+      "potassium": 122.8,
+      "zinc": 0.27,
+      "iron": 0.71,
+      "manganese": 6.41,
+      "copper": 1.65,
+      "boron": 0.63
+    },
+    "weather": {
+      "temperature": 28.0,
+      "humidity": 82.0,
+      "rainfall": 2.0,
+      "season": "post_monsoon"
+    },
+    "primary_crop": "muskmelon",
+    "top5": [
+      [
+        "muskmelon",
+        0.5646
+      ],
+      [
+        "watermelon",
+        0.1241
+      ],
+      [
+        "chickpea",
+        0.0
+      ],
+      [
+        "mungbean",
+        0.0
+      ],
+      [
+        "cotton",
+        0.0
+      ]
+    ],
+    "explanation": "The model's Top-3 most influential factors overall are humidity, phosphorus level, rainfall. This farm's soil pH is 7.70. Current conditions show a temperature of 28.0\u00b0C and rainfall of 2.0mm, which were factored into this prediction. Agronomic validation: Soil test indicates low nitrogen, phosphorus, organic_carbon \u2014 SHC national reference classification (see datasets/agronomic_rules for source). Agronomic validation is limited for this crop; recommendation relies primarily on the trained model. Add a reviewed crop-specific rule to improve confidence calibration. ICAR identifies nitrogen, phosphorus and zinc deficiency as important soil constraints in Karnataka red and black soils.",
+    "ocr_pipeline_s": 3.79,
+    "recommendation_api_s": 2.063
+  },
+  "O1_TC02": {
+    "top1_hits": 22,
+    "top3_hits": 22,
+    "n": 22,
+    "rows": [
+      [
+        "apple",
+        "apple",
+        0.978
+      ],
+      [
+        "banana",
+        "banana",
+        0.976
+      ],
+      [
+        "blackgram",
+        "blackgram",
+        0.972
+      ],
+      [
+        "chickpea",
+        "chickpea",
+        0.984
+      ],
+      [
+        "coconut",
+        "coconut",
+        0.978
+      ],
+      [
+        "coffee",
+        "coffee",
+        0.976
+      ],
+      [
+        "cotton",
+        "cotton",
+        0.978
+      ],
+      [
+        "grapes",
+        "grapes",
+        0.973
+      ],
+      [
+        "jute",
+        "jute",
+        0.974
+      ],
+      [
+        "kidneybeans",
+        "kidneybeans",
+        0.981
+      ],
+      [
+        "lentil",
+        "lentil",
+        0.974
+      ],
+      [
+        "maize",
+        "maize",
+        0.98
+      ],
+      [
+        "mango",
+        "mango",
+        0.974
+      ],
+      [
+        "mothbeans",
+        "mothbeans",
+        0.938
+      ],
+      [
+        "mungbean",
+        "mungbean",
+        0.975
+      ],
+      [
+        "muskmelon",
+        "muskmelon",
+        0.983
+      ],
+      [
+        "orange",
+        "orange",
+        0.972
+      ],
+      [
+        "papaya",
+        "papaya",
+        0.98
+      ],
+      [
+        "pigeonpeas",
+        "pigeonpeas",
+        0.965
+      ],
+      [
+        "pomegranate",
+        "pomegranate",
+        0.975
+      ],
+      [
+        "rice",
+        "rice",
+        0.962
+      ],
+      [
+        "watermelon",
+        "watermelon",
+        0.978
+      ]
+    ]
+  },
+  "O1_TC03": {
+    "test_n": 220,
+    "accuracy": 0.990909090909091,
+    "macro_f1": 0.9908863066757803,
+    "min_crop_recall": 0.9,
+    "crops_below_0.9": [],
+    "latency_ms_per_sample": 0.02144019090906113
+  },
+  "O1_TC04": {
+    "wet_monsoon_top1": "rice",
+    "dry_winter_top1": "chickpea"
+  },
+  "O1_TC05": {
+    "rice_pH6.0": 0.05,
+    "rice_pH8.2": -0.05,
+    "maize_no_rule": -0.01
+  },
+  "O1_TC06": {
+    "all_four_low_adjustment": -0.09
+  },
+  "O2_TC01": {
+    "N": {
+      "279.9": "low",
+      "280": "medium",
+      "559.9": "medium",
+      "560": "high"
+    },
+    "P": {
+      "9.9": "low",
+      "10": "medium",
+      "25": "high"
+    },
+    "K": {
+      "119": "low",
+      "120": "medium",
+      "280": "high"
+    },
+    "OC": {
+      "0.49": "low",
+      "0.5": "medium",
+      "0.75": "high"
+    }
+  },
+  "O2_TC02": {
+    "items": {
+      "Urea": "~244.5 kg Urea total for this farm (172.6 kg/ha x 1.42 ha) \u2014 calculated nutrient-replacement estimate, not a sourced dose.",
+      "DAP": "~17.9 kg DAP total for this farm (12.6 kg/ha x 1.42 ha) \u2014 calculated nutrient-replacement estimate, not a sourced dose."
+    },
+    "expected": {
+      "Urea_kg_ha": 172.6086956521739,
+      "Urea_total": 244.49158695652173,
+      "DAP_kg_ha": 12.630434782608694,
+      "DAP_total": 17.890379347826084
+    }
+  },
+  "O2_TC03": [
+    "~40.5 kg MOP total for this farm (100.0 kg/ha x 0.40 ha) \u2014 calculated nutrient-replacement estimate, not a sourced dose."
+  ],
+  "O2_TC04": [
+    [
+      "150 kg/ha Nitrogen (N) (Package-of-practice control cited in UAS Bengaluru research)",
+      "University of Agricultural Sciences, GKVK Bengaluru"
+    ],
+    [
+      "75 kg/ha Phosphorus (P2O5) (Package-of-practice control cited in UAS Bengaluru research)",
+      "University of Agricultural Sciences, GKVK Bengaluru"
+    ],
+    [
+      "40 kg/ha Potassium (K2O) (Package-of-practice control cited in UAS Bengaluru research)",
+      "University of Agricultural Sciences, GKVK Bengaluru"
+    ]
+  ],
+  "O2_TC06": {
+    "crop": "muskmelon",
+    "deficiency_profile": {
+      "nitrogen": "low",
+      "phosphorus": "low",
+      "potassium": "medium",
+      "organic_carbon": "low"
+    },
+    "fertilizers": [
+      [
+        "Urea",
+        "~244.5 kg Urea total for this farm (172.6 kg/ha x 1.42 ha) \u2014 calculated nutrient-replacement estimate, not a sourced dose."
+      ],
+      [
+        "DAP",
+        "~17.9 kg DAP total for this farm (12.6 kg/ha x 1.42 ha) \u2014 calculated nutrient-replacement estimate, not a sourced dose."
+      ]
+    ],
+    "coverage": "fallback"
+  },
+  "O3_TC01": {
+    "market_routes": [
+      "/api/v1/market/crops",
+      "/api/v1/market/{crop}/outlook"
+    ],
+    "crop": "muskmelon",
+    "current_price": 4600.0,
+    "scope": "India",
+    "as_of": "2026-09-24",
+    "action": "sell_when_ready",
+    "advice": "Current muskmelon price is about Rs 4,600/quintal (most mandis between Rs 3,250 and Rs 5,000). There is not enough price history for muskmelon to forecast, so there is no evidence that waiting will pay. Sell when ready and compare prices at nearby mandis."
+  },
+  "O3_TC02": {
+    "model_crops": 22,
+    "with_current_price": 21,
+    "with_validated_forecast": [
+      "apple",
+      "chickpea",
+      "maize",
+      "orange",
+      "watermelon"
+    ],
+    "missing": [
+      "mothbeans"
+    ]
+  },
+  "O3_TC03": {
+    "pooled_mape_seasonal": 0.2074,
+    "pooled_mape_naive": 0.2018,
+    "shown": [
+      "apple",
+      "chickpea",
+      "maize",
+      "orange",
+      "watermelon"
+    ],
+    "per_crop": {
+      "apple": {
+        "n_forecasts": 51,
+        "mape_seasonal": 0.1289,
+        "mape_naive": 0.3066
+      },
+      "chickpea": {
+        "n_forecasts": 51,
+        "mape_seasonal": 0.1785,
+        "mape_naive": 0.1951
+      },
+      "maize": {
+        "n_forecasts": 51,
+        "mape_seasonal": 0.0877,
+        "mape_naive": 0.102
+      },
+      "orange": {
+        "n_forecasts": 51,
+        "mape_seasonal": 0.2977,
+        "mape_naive": 0.4287
+      },
+      "watermelon": {
+        "n_forecasts": 51,
+        "mape_seasonal": 0.4204,
+        "mape_naive": 0.4233
+      }
+    }
+  },
+  "O3_TC04": {
+    "maize": {
+      "action": "sell_now",
+      "best_month": null,
+      "gain": 0.0,
+      "forecast": [
+        [
+          "Oct 2026",
+          2189.0
+        ],
+        [
+          "Nov 2026",
+          2124.0
+        ],
+        [
+          "Dec 2026",
+          2238.0
+        ],
+        [
+          "Jan 2027",
+          2292.0
+        ],
+        [
+          "Feb 2027",
+          2252.0
+        ],
+        [
+          "Mar 2027",
+          2285.0
+        ]
+      ]
+    },
+    "watermelon": {
+      "action": "time_harvest",
+      "best_month": "Nov 2026",
+      "gain": 18.4,
+      "forecast": [
+        [
+          "Oct 2026",
+          1816.0
+        ],
+        [
+          "Nov 2026",
+          2072.0
+        ],
+        [
+          "Dec 2026",
+          1790.0
+        ],
+        [
+          "Jan 2027",
+          1468.0
+        ],
+        [
+          "Feb 2027",
+          1642.0
+        ],
+        [
+          "Mar 2027",
+          1910.0
+        ]
+      ]
+    },
+    "rice": {
+      "action": "sell_when_ready",
+      "best_month": null,
+      "gain": null,
+      "forecast": []
+    }
+  },
+  "O4_TC01": {
+    "keys": 59,
+    "missing": {
+      "en": 0,
+      "kn": 0,
+      "hi": 0,
+      "te": 0
+    },
+    "missing_examples": {}
+  },
+  "O4_TC02": {
+    "fields": 11,
+    "exact": 11,
+    "status": "success",
+    "pipeline_seconds_4_pages": 2.72
+  },
+  "O4_TC03": {
+    "engine": "Tesseract",
+    "fields": 11,
+    "correct": [
+      "ph",
+      "ec",
+      "nitrogen",
+      "manganese"
+    ],
+    "read": {
+      "zinc": 15.0,
+      "iron": 1.0,
+      "ph": 7.7,
+      "ec": 0.04,
+      "organic_carbon": 0.51,
+      "nitrogen": 200.6,
+      "phosphorus": -19.0,
+      "sulphur": 126.5,
+      "manganese": 6.41,
+      "copper": 65.0
+    },
+    "mean_conf": 0.7034010460865301,
+    "validation_status": "failed",
+    "missing": [
+      "potassium"
+    ],
+    "out_of_range": [
+      "phosphorus"
+    ]
+  },
+  "O4_TC04": {
+    "status_at_conf_0.60": "needs_review",
+    "after_correction": "success",
+    "phosphorus": 4.2
+  },
+  "O4_TC05": {
+    "bad_file": 400,
+    "negative_area": 422,
+    "weak_password": 422
+  },
+  "O4_TC06": {
+    "no_token": 401,
+    "bad_token": 401,
+    "other_users_farm": 404,
+    "wrong_password": 401
+  },
+  "O4_TC07": {
+    "history_items": 2
+  },
+  "O4_TC08": {
+    "n": 20,
+    "mean_ms": 25.179295000015145,
+    "p95_ms": 29.900956900041823,
+    "max_ms": 30.452524999986963
+  },
+  "O4_TC09": {
+    "farm_source": "gps",
+    "profile": {
+      "latitude": 16.1802,
+      "longitude": 75.6961,
+      "location_accuracy_m": 24.0,
+      "location_source": "gps"
+    },
+    "typed_farm_source": "district",
+    "after_update": "gps"
+  },
+  "O5_TC01": {
+    "in_range": [
+      "maize",
+      0.9798561334609985
+    ],
+    "real_card_ood": [
+      "muskmelon",
+      0.6346425414085388
+    ]
+  }
+}

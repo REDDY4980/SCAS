@@ -165,6 +165,13 @@ class AppStrings {
     'logout': {'en': 'Logout', 'kn': 'ಲಾಗ್ ಔಟ್', 'hi': 'लॉग आउट', 'te': 'లాగ్ అవుట్'},
     'comingSoon': {'en': '(soon)', 'kn': '(ಶೀಘ್ರದಲ್ಲಿ)', 'hi': '(जल्द ही)', 'te': '(త్వరలో)'},
 
+    // Market (Objective 3)
+    'marketPrices': {'en': 'Market Prices', 'kn': 'ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು', 'hi': 'बाज़ार भाव', 'te': 'మార్కెట్ ధరలు'},
+    'currentPrice': {'en': 'Current price', 'kn': 'ಪ್ರಸ್ತುತ ಬೆಲೆ', 'hi': 'वर्तमान भाव', 'te': 'ప్రస్తుత ధర'},
+    'priceOutlook': {'en': 'Price outlook', 'kn': 'ಬೆಲೆ ಮುನ್ನೋಟ', 'hi': 'भाव का अनुमान', 'te': 'ధర అంచనా'},
+    'whenToSell': {'en': 'When to sell', 'kn': 'ಯಾವಾಗ ಮಾರಾಟ ಮಾಡಬೇಕು', 'hi': 'कब बेचें', 'te': 'ఎప్పుడు అమ్మాలి'},
+    'selectCrop': {'en': 'Select crop', 'kn': 'ಬೆಳೆ ಆಯ್ಕೆಮಾಡಿ', 'hi': 'फसल चुनें', 'te': 'పంటను ఎంచుకోండి'},
+
     // AI Analysis / soil results
     'extractedHealthStatus': {
       'en': 'Extracted Health Status',

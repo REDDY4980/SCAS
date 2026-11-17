@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Numeric, String, func
+from sqlalchemy import DateTime, Float, ForeignKey, Numeric, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -25,6 +25,10 @@ class Farm(Base):
     village: Mapped[str | None] = mapped_column(String(150), nullable=True)
     latitude: Mapped[float | None] = mapped_column(Numeric(9, 6), nullable=True)
     longitude: Mapped[float | None] = mapped_column(Numeric(9, 6), nullable=True)
+    # How the coordinates were obtained: "gps" (device), "district" or
+    # "state" (geocoded from the typed address), or NULL (none yet).
+    location_source: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    location_accuracy_m: Mapped[float | None] = mapped_column(Float, nullable=True)
     soil_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
     area_acres: Mapped[float | None] = mapped_column(Numeric(8, 2), nullable=True)
 

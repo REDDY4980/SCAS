@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/market.dart';
 import '../models/recommendation.dart';
 import '../providers/repository_providers.dart';
 import '../routes/app_router.dart';
@@ -94,7 +95,7 @@ class _CropRecommendationScreenState extends ConsumerState<CropRecommendationScr
           ),
         ),
         const SizedBox(height: 16),
-        _MarketPriceComingSoonCard(crop: result.primaryCrop),
+        _MarketOutlookCard(crop: result.primaryCrop),
         const SizedBox(height: 20),
         Text('Top 5 Alternatives', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
@@ -132,49 +133,49 @@ class _CropRecommendationScreenState extends ConsumerState<CropRecommendationScr
   }
 }
 
-/// Market price trend for the recommended crop — honestly labeled
-/// Coming Soon (same pattern as the dashboard's Disease Scan/Market
-/// quick actions) rather than showing a fabricated graph. A real
-/// integration needs a per-user data.gov.in API key (the public demo
-/// key for the Agmarknet mandi-price resource returns "Key not
-/// authorised" — verified live, not assumed) which requires the
-/// account holder to register for one; nothing free and keyless from a
-/// reliable public source was available to wire up in its place.
-class _MarketPriceComingSoonCard extends StatelessWidget {
+/// Market outlook for the recommended crop (Objective 3). Shows the
+/// current mandi price and the selling advice; tap for the full outlook.
+class _MarketOutlookCard extends ConsumerWidget {
   final String crop;
-  const _MarketPriceComingSoonCard({required this.crop});
+  const _MarketOutlookCard({required this.crop});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final title = '${crop[0].toUpperCase()}${crop.substring(1)} market price';
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Market price trends are coming in a future update.')),
-          );
-        },
+        onTap: () => context.push('${AppRoutes.market}?crop=$crop'),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Icon(Icons.show_chart_outlined),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Market Price Trend', style: Theme.of(context).textTheme.titleSmall),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${crop[0].toUpperCase()}${crop.substring(1)} mandi prices — coming soon',
-                      style: Theme.of(context).textTheme.bodySmall,
+          child: FutureBuilder<MarketOutlook>(
+            future: ref.read(marketRepositoryProvider).getOutlook(crop),
+            builder: (context, snap) {
+              final o = snap.data;
+              final subtitle = snap.connectionState != ConnectionState.done
+                  ? 'Loading mandi prices...'
+                  : o == null
+                      ? 'No mandi price data for this crop yet'
+                      : 'About Rs ${o.currentPrice.round()}/quintal (${o.scope}) - '
+                          '${o.action == 'hold' ? 'hold until ${o.bestMonth}' : o.action == 'time_harvest' ? 'best around ${o.bestMonth}' : o.action == 'sell_now' ? 'sell now' : 'sell when ready'}';
+              return Row(
+                children: [
+                  const Icon(Icons.show_chart_outlined),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(title, style: Theme.of(context).textTheme.titleSmall),
+                        const SizedBox(height: 2),
+                        Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Text('(soon)', style: Theme.of(context).textTheme.bodySmall),
-            ],
+                  ),
+                  const Icon(Icons.chevron_right),
+                ],
+              );
+            },
           ),
         ),
       ),

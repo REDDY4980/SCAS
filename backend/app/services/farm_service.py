@@ -20,6 +20,7 @@ from fastapi import HTTPException, status
 from app.models.farm import Farm
 from app.models.user import User
 from app.repositories.farm_repository import FarmRepository
+from app.repositories.user_repository import UserRepository
 from app.schemas.farm import FarmCreate, FarmOut, FarmUpdate
 from app.weather.geocoding import GeocodingError, geocode_place
 
@@ -31,6 +32,10 @@ class FarmService:
         self.repo = repo
 
     def _resolve_coordinates(self, *, district: str, state: str) -> tuple[float | None, float | None]:
+        latitude, longitude, _ = self._geocode(district=district, state=state)
+        return latitude, longitude
+
+    def _geocode(self, *, district: str, state: str) -> tuple[float | None, float | None, str | None]:
         """
         Best-effort geocoding fallback — never raises. A farmer's ability
         to save a farm must not depend on a third-party geocoding service
@@ -42,27 +47,43 @@ class FarmService:
             location = geocode_place(district, state=state)
         except GeocodingError as exc:
             logger.warning("Geocoding failed for district=%r state=%r: %s", district, state, exc)
-            return None, None
+            return None, None, None
         if location is None:
             logger.info("Geocoding found no match for district=%r state=%r", district, state)
-            return None, None
+            return None, None, None
         if location.is_approximate:
             logger.info(
                 "Geocoding fell back to state-level coordinates for district=%r state=%r", district, state
             )
-        return location.latitude, location.longitude
+        return location.latitude, location.longitude, ("state" if location.is_approximate else "district")
 
     def create_farm(self, user: User, payload: FarmCreate) -> FarmOut:
         fields = payload.model_dump()
-        if fields.get("latitude") is None or fields.get("longitude") is None:
-            latitude, longitude = self._resolve_coordinates(
-                district=fields["district"], state=fields["state"]
-            )
+        gps = fields.get("latitude") is not None and fields.get("longitude") is not None
+        if gps:
+            fields["location_source"] = "gps"
+        else:
+            fields["latitude"] = fields["longitude"] = fields["location_accuracy_m"] = None
+            latitude, longitude, source = self._geocode(district=fields["district"], state=fields["state"])
             if latitude is not None and longitude is not None:
-                fields["latitude"] = latitude
-                fields["longitude"] = longitude
+                fields.update(latitude=latitude, longitude=longitude, location_source=source)
         farm = self.repo.create(user_id=user.id, **fields)
+        if gps:
+            # The device position used for the farm is also the farmer's
+            # current location, so keep the profile in step with it.
+            UserRepository(self.repo.db).update_location(
+                user, latitude=fields["latitude"], longitude=fields["longitude"],
+                accuracy_m=fields.get("location_accuracy_m"), source="gps",
+            )
         return FarmOut.model_validate(farm)
+
+    def apply_device_location(self, user: User, farm_id: uuid.UUID, *, latitude: float,
+                              longitude: float, accuracy_m: float | None) -> FarmOut:
+        """Set a farm's coordinates from the device's GPS (farmer standing on the farm)."""
+        farm = self._get_owned_farm_or_404(user, farm_id)
+        updated = self.repo.update(farm, latitude=latitude, longitude=longitude,
+                                   location_source="gps", location_accuracy_m=accuracy_m)
+        return FarmOut.model_validate(updated)
 
     def list_farms(self, user: User) -> list[FarmOut]:
         farms = self.repo.list_for_user(user.id)
@@ -87,14 +108,17 @@ class FarmService:
         # after weather failed) — this is how a farmer corrects bad/absent
         # coordinates without ever seeing the concept of coordinates.
         location_edited = fields.get("district") is not None or fields.get("state") is not None
-        coords_given = fields.get("latitude") is not None or fields.get("longitude") is not None
-        if location_edited and not coords_given:
+        coords_given = fields.get("latitude") is not None and fields.get("longitude") is not None
+        if coords_given:
+            fields["location_source"] = "gps"
+        elif location_edited and farm.location_source != "gps":
+            # Never overwrite a GPS fix with a coarser geocoded point just
+            # because the farmer corrected the spelling of the district.
             district = fields.get("district") or farm.district
             state = fields.get("state") or farm.state
-            latitude, longitude = self._resolve_coordinates(district=district, state=state)
+            latitude, longitude, source = self._geocode(district=district, state=state)
             if latitude is not None and longitude is not None:
-                fields["latitude"] = latitude
-                fields["longitude"] = longitude
+                fields.update(latitude=latitude, longitude=longitude, location_source=source)
 
         updated = self.repo.update(farm, **fields)
         return FarmOut.model_validate(updated)

@@ -78,6 +78,20 @@ async def lifespan(app: FastAPI):
     except Exception:
         logger.exception("OCR engine warm-up failed (non-fatal) — will load lazily on first request.")
 
+    # Load the crop model now so a missing/unloadable model shows up in the
+    # startup log immediately, instead of as a 500 on a farmer's first
+    # recommendation. Non-fatal by design (see app/ml/registry.py).
+    try:
+        from app.ml.registry import get_inference_engine
+
+        get_inference_engine()
+        logger.info("ML model loaded.")
+    except Exception:
+        logger.exception(
+            "ML model could NOT be loaded - /recommendation will fail until "
+            "`python -m ml.training.run_training` has produced ml/artifacts/*.joblib."
+        )
+
     yield
     logger.info("SCAS backend shutting down.")
 

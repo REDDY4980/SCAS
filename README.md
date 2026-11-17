@@ -5,7 +5,7 @@ real-time climate intelligence to recommend crops and fertilizers,
 built to **AIB v1.0** (Volumes 0–19) — see `docs/` for the governing
 specification and resolved domain resources.
 
-**Status:** Phase 1 — Project Initialization (AIB Vol 17.3, Phase 1) complete.
+**Status:** All phases complete — crop recommendation, fertilizer, market outlook, OCR, weather and the Flutter app. **Start with [IMPLEMENTATION.md](IMPLEMENTATION.md)** for the step-by-step setup, code walkthrough and deployment guide.
 
 ## Repository Layout
 
@@ -92,15 +92,15 @@ agronomic rules, OCR calibration samples) is documented in
 | 2 | Authentication & Database | ✅ Complete |
 | 4 | OCR Pipeline | ✅ Complete |
 | 5 | Climate Engine | ✅ Complete |
-| 6 | Machine Learning | ✅ Complete (real trained model, 98.64% test accuracy) |
+| 6 | Machine Learning | ✅ Complete (real trained model, 99.09% test accuracy) |
 | 7 | Hybrid Recommendation | ✅ Complete |
 | 8 | Fertilizer Engine | ✅ Complete |
 | 9 | History & Profile | ✅ Complete |
 | 3 | Flutter Foundation | ✅ Complete — code-complete, never compiled (no Flutter SDK available) |
 | 10 | Testing & Deployment | ✅ Complete |
 
-**All 10 AIB phases are implemented.** 160 automated tests passing
-(135 backend + 25 ML), 94%/87% coverage, a genuinely trained ML model,
+**All 10 AIB phases are implemented.** 237 automated tests passing
+(183 backend + 29 objective-wise acceptance + 25 ML), 94%/87% coverage, a genuinely trained ML model,
 and every backend bug found during development was found by actually
 running the code against real data — not assumed away. Two more real
 bugs were caught in Phase 10's final review (a Docker volume that
@@ -147,3 +147,18 @@ cd backend
 pip install -r requirements.txt
 pytest tests/ -v   # 25 tests, no Docker/Postgres required (uses in-memory SQLite)
 ```
+
+## Objective-wise acceptance testing
+
+`backend/tests/acceptance/test_objectives.py` adds 29 acceptance tests, each mapped to a
+project objective (O1 crop recommendation, O2 fertilizer type & quantity, O3 market
+prediction, O4 usable/accessible platform, O5 reliable ML). Run with:
+
+```bash
+python -m ml.training.run_training --trials 20   # creates ml/artifacts/model.joblib
+cd backend && pytest tests/acceptance -v -rx
+```
+
+Latest run (22 Oct 2026): **29 passed**, including O3 market prediction (`/api/v1/market`) and GPS location saved to the farm and farmer profile (O4-09).
+Full results: `docs/testing/SCAS_Testing_Report.pdf`; raw numbers:
+`docs/testing/acceptance_metrics.json`.

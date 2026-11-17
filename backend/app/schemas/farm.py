@@ -26,6 +26,8 @@ class FarmCreate(BaseModel):
     )
     soil_type: str | None = Field(default=None, max_length=50)
     area_acres: float | None = Field(default=None, gt=0)
+    # Accuracy radius (metres) reported by the device with GPS coordinates.
+    location_accuracy_m: float | None = Field(default=None, ge=0)
 
 
 class FarmUpdate(BaseModel):
@@ -41,6 +43,7 @@ class FarmUpdate(BaseModel):
     )
     soil_type: str | None = Field(default=None, max_length=50)
     area_acres: float | None = Field(default=None, gt=0)
+    location_accuracy_m: float | None = Field(default=None, ge=0)
 
 
 class FarmOut(BaseModel):
@@ -54,6 +57,8 @@ class FarmOut(BaseModel):
     longitude: float | None
     soil_type: str | None
     area_acres: float | None
+    location_source: str | None = None
+    location_accuracy_m: float | None = None
     created_at: datetime
     updated_at: datetime
 

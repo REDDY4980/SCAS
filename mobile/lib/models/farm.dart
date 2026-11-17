@@ -10,6 +10,8 @@ class Farm {
   final double? longitude;
   final String? soilType;
   final double? areaAcres;
+  final String? locationSource; // gps | district | state | null
+  final double? locationAccuracyM;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -24,11 +26,14 @@ class Farm {
     this.longitude,
     this.soilType,
     this.areaAcres,
+    this.locationSource,
+    this.locationAccuracyM,
     required this.createdAt,
     required this.updatedAt,
   });
 
   bool get hasCoordinates => latitude != null && longitude != null;
+  bool get hasGps => locationSource == 'gps';
 
   factory Farm.fromJson(Map<String, dynamic> json) {
     return Farm(
@@ -42,6 +47,8 @@ class Farm {
       longitude: (json['longitude'] as num?)?.toDouble(),
       soilType: json['soil_type'] as String?,
       areaAcres: (json['area_acres'] as num?)?.toDouble(),
+      locationSource: json['location_source'] as String?,
+      locationAccuracyM: (json['location_accuracy_m'] as num?)?.toDouble(),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -56,5 +63,6 @@ class Farm {
         if (longitude != null) 'longitude': longitude,
         if (soilType != null) 'soil_type': soilType,
         if (areaAcres != null) 'area_acres': areaAcres,
+        if (latitude != null && locationAccuracyM != null) 'location_accuracy_m': locationAccuracyM,
       };
 }

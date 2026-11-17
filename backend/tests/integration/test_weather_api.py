@@ -130,7 +130,10 @@ def test_first_call_fetches_and_persists(client, auth_headers, farm_id_with_coor
     assert data["cache_hit"] is False
     assert data["temperature"] == pytest.approx(28.4)
     assert data["rainfall"] == pytest.approx(4.8)
-    assert data["season"] == "monsoon"
+    # The fake provider stamps "now", so the season follows today's month
+    # (this assertion used to hardcode "monsoon" and broke every October).
+    from app.weather.normalizer import season_for_month
+    assert data["season"] == season_for_month(datetime.now(timezone.utc).month)
     assert fake_weather_providers["primary"].calls == 1
 
 

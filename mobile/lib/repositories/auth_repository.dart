@@ -63,6 +63,27 @@ class AuthRepository {
     return UserProfile.fromJson(response['data'] as Map<String, dynamic>);
   }
 
+  /// Saves the detected device location on the farmer profile and, when
+  /// [applyToFarmId] is given, as that farm's GPS position.
+  Future<UserProfile> updateLocation({
+    required double latitude,
+    required double longitude,
+    double? accuracyM,
+    String? applyToFarmId,
+  }) async {
+    final response = await _client.put(
+      ApiEndpoints.userLocation,
+      data: {
+        'latitude': latitude,
+        'longitude': longitude,
+        if (accuracyM != null) 'accuracy_m': accuracyM,
+        if (applyToFarmId != null) 'apply_to_farm_id': applyToFarmId,
+      },
+    );
+    final data = response['data'] as Map<String, dynamic>;
+    return UserProfile.fromJson(data['profile'] as Map<String, dynamic>);
+  }
+
   /// Vol 6.3 step 8: "Logout removes local token."
   Future<void> logout() => SecureStorageService.instance.clearToken();
 

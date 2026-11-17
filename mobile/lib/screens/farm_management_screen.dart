@@ -8,6 +8,7 @@ import '../routes/app_router.dart';
 import '../services/api_exception.dart';
 import '../services/location_service.dart';
 import '../widgets/common_widgets.dart';
+import '../widgets/location_status_tile.dart';
 
 /// SCR-005 Farm Management.
 /// Primary Components: Farm location, soil type, acreage.
@@ -134,6 +135,32 @@ class _CreateFarmSheetState extends ConsumerState<_CreateFarmSheet> {
   bool _submitting = false;
   String? _error;
 
+  // Device location: detected as soon as the form opens so the farmer sees
+  // the result (and can retry) before saving, instead of a silent attempt.
+  LocationResult? _location;
+  bool _locating = false;
+  Future<LocationResult>? _locationFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _detectLocation());
+  }
+
+  Future<LocationResult> _detectLocation() {
+    setState(() => _locating = true);
+    final future = LocationService.detect();
+    _locationFuture = future;
+    future.then((r) {
+      if (!mounted) return;
+      setState(() {
+        _location = r;
+        _locating = false;
+      });
+    });
+    return future;
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -152,10 +179,10 @@ class _CreateFarmSheetState extends ConsumerState<_CreateFarmSheet> {
       _error = null;
     });
     try {
-      // Silent, best-effort: one permission prompt, no coordinates ever
-      // shown. If denied/unavailable, coords stay null and the backend
-      // resolves an approximate location from District/State instead.
-      final coords = await LocationService.tryGetCurrentCoordinates();
+      // Wait for the detection started when the form opened (if still
+      // running); without GPS the backend geocodes the typed district.
+      final loc = _locating && _locationFuture != null ? await _locationFuture! : _location;
+      final gps = (loc?.ok ?? false) ? loc : null;
       final farm = Farm(
         id: '',
         userId: '',
@@ -165,8 +192,9 @@ class _CreateFarmSheetState extends ConsumerState<_CreateFarmSheet> {
         village: _villageController.text.trim().isEmpty ? null : _villageController.text.trim(),
         soilType: _soilTypeController.text.trim().isEmpty ? null : _soilTypeController.text.trim(),
         areaAcres: double.tryParse(_areaController.text),
-        latitude: coords?.$1,
-        longitude: coords?.$2,
+        latitude: gps?.latitude,
+        longitude: gps?.longitude,
+        locationAccuracyM: gps?.accuracyM,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
@@ -246,11 +274,8 @@ class _CreateFarmSheetState extends ConsumerState<_CreateFarmSheet> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Text(
-                  "We'll automatically detect your farm's location for weather forecasts.",
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                padding: const EdgeInsets.only(top: 8),
+                child: LocationStatusTile(detecting: _locating, result: _location, onRetry: _detectLocation),
               ),
               if (_error != null) ...[
                 const SizedBox(height: 8),

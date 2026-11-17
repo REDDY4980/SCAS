@@ -1,0 +1,84 @@
+{
+  "method": "seasonal-index forecast anchored on the latest price vs naive (no-change) forecast; rolling origins, horizons 1-6 months",
+  "pooled_mape_seasonal": 0.2074,
+  "pooled_mape_naive": 0.2018,
+  "crops_where_seasonal_beats_naive": [
+    "apple",
+    "chickpea",
+    "maize",
+    "orange",
+    "watermelon"
+  ],
+  "per_crop": {
+    "rice": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.0623,
+      "mape_naive": 0.0509
+    },
+    "maize": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.0877,
+      "mape_naive": 0.102
+    },
+    "chickpea": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.1785,
+      "mape_naive": 0.1951
+    },
+    "pigeonpeas": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.2837,
+      "mape_naive": 0.1614
+    },
+    "mungbean": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.2029,
+      "mape_naive": 0.152
+    },
+    "blackgram": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.2737,
+      "mape_naive": 0.2127
+    },
+    "lentil": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.1476,
+      "mape_naive": 0.1244
+    },
+    "pomegranate": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.191,
+      "mape_naive": 0.1287
+    },
+    "banana": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.3521,
+      "mape_naive": 0.3263
+    },
+    "grapes": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.1801,
+      "mape_naive": 0.1375
+    },
+    "watermelon": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.4204,
+      "mape_naive": 0.4233
+    },
+    "apple": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.1289,
+      "mape_naive": 0.3066
+    },
+    "orange": {
+      "n_forecasts": 51,
+      "mape_seasonal": 0.2977,
+      "mape_naive": 0.4287
+    },
+    "cotton": {
+      "n_forecasts": 43,
+      "mape_seasonal": 0.0759,
+      "mape_naive": 0.0516
+    }
+  }
+}

@@ -68,6 +68,8 @@ class Settings(BaseSettings):
     # (see docker-compose.yml) where that relative resolution doesn't apply.
     agronomic_rules_path: str | None = Field(default=None, alias="AGRONOMIC_RULES_PATH")
     fertilizer_kb_path: str | None = Field(default=None, alias="FERTILIZER_KB_PATH")
+    # Market price artefacts (datasets/market); None = repo-relative default.
+    market_data_dir: str | None = Field(default=None, alias="MARKET_DATA_DIR")
 
     @field_validator("jwt_secret")
     @classmethod

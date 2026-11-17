@@ -14,6 +14,7 @@ import '../screens/fertilizer_recommendation_screen.dart';
 import '../screens/history_detail_screen.dart';
 import '../screens/history_screen.dart';
 import '../screens/login_screen.dart';
+import '../screens/market_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/register_screen.dart';
 import '../screens/splash_screen.dart';
@@ -39,6 +40,7 @@ class AppRoutes {
   static const history = '/history';
   static const historyDetail = '/history/:id';
   static const profile = '/profile';
+  static const market = '/market';
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -143,6 +145,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => HistoryDetailScreen(recommendationId: state.pathParameters['id']!),
       ),
       GoRoute(path: AppRoutes.profile, builder: (context, state) => const ProfileScreen()),
+      GoRoute(
+        path: AppRoutes.market,
+        builder: (context, state) => MarketScreen(initialCrop: state.uri.queryParameters['crop']),
+      ),
     ],
   );
 });

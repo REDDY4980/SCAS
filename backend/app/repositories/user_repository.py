@@ -45,6 +45,19 @@ class UserRepository:
         self.db.refresh(user)
         return user
 
+    def update_location(self, user: User, *, latitude: float, longitude: float,
+                        accuracy_m: float | None, source: str) -> User:
+        from datetime import datetime, timezone
+
+        user.latitude = latitude
+        user.longitude = longitude
+        user.location_accuracy_m = accuracy_m
+        user.location_source = source
+        user.location_updated_at = datetime.now(timezone.utc)
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
     def get_settings(self, user_id: uuid.UUID) -> UserSettings | None:
         return self.db.execute(
             select(UserSettings).where(UserSettings.user_id == user_id)

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1 import auth, farms, fertilizer, history, recommendation, soil, users, weather
+from app.api.v1 import auth, farms, fertilizer, history, market, recommendation, soil, users, weather
 
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(auth.router)
@@ -13,3 +13,4 @@ api_router.include_router(weather.router)
 api_router.include_router(recommendation.router)
 api_router.include_router(fertilizer.router)
 api_router.include_router(history.router)
+api_router.include_router(market.router)

@@ -63,6 +63,11 @@ class AuthenticationService:
             language=settings_row.language if settings_row else "en",
             theme=settings_row.theme if settings_row else "system",
             notifications=settings_row.notifications if settings_row else True,
+            latitude=float(user.latitude) if user.latitude is not None else None,
+            longitude=float(user.longitude) if user.longitude is not None else None,
+            location_accuracy_m=user.location_accuracy_m,
+            location_source=user.location_source,
+            location_updated_at=user.location_updated_at,
         )
 
     def get_current_user_profile(self, user: User) -> ProfileOut:

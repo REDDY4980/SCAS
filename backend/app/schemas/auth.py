@@ -72,5 +72,29 @@ class ProfileOut(BaseModel):
     language: str
     theme: str
     notifications: bool
+    # Last detected device location (None until the app has detected it once).
+    latitude: float | None = None
+    longitude: float | None = None
+    location_accuracy_m: float | None = None
+    location_source: str | None = None
+    location_updated_at: datetime | None = None
 
     model_config = {"from_attributes": True}
+
+
+class LocationUpdate(BaseModel):
+    """Device location sent by the app (GPS / browser geolocation)."""
+
+    latitude: float = Field(..., ge=-90, le=90)
+    longitude: float = Field(..., ge=-180, le=180)
+    accuracy_m: float | None = Field(default=None, ge=0)
+    # Optional: also use this position for one of the farmer's farms.
+    apply_to_farm_id: uuid.UUID | None = None
+
+    @field_validator("longitude")
+    @classmethod
+    def reject_null_island(cls, v: float, info) -> float:
+        # (0, 0) is what broken location providers return; it is in the Atlantic.
+        if v == 0 and info.data.get("latitude") == 0:
+            raise ValueError("Location (0, 0) is not a valid device position")
+        return v

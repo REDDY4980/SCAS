@@ -149,7 +149,7 @@ class DashboardScreen extends ConsumerWidget {
                   QuickActionButton(icon: Icons.eco_outlined, label: s.t('crops'), onTap: () => _goToLatestOrUpload(context, ref, latestAsync, toFertilizer: false)),
                   QuickActionButton(icon: Icons.water_drop_outlined, label: s.t('fertilizer'), onTap: () => _goToLatestOrUpload(context, ref, latestAsync, toFertilizer: true)),
                   QuickActionButton(icon: Icons.camera_alt_outlined, label: s.t('diseaseScan'), onTap: _noop, comingSoon: true),
-                  QuickActionButton(icon: Icons.bar_chart_outlined, label: s.t('market'), onTap: _noop, comingSoon: true),
+                  QuickActionButton(icon: Icons.bar_chart_outlined, label: s.t('market'), onTap: () => context.push(AppRoutes.market)),
                   QuickActionButton(
                     icon: Icons.cloud_outlined,
                     label: s.t('weather'),

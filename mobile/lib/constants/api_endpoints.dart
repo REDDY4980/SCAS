@@ -19,6 +19,7 @@ class ApiEndpoints {
 
   // Profile (Phase 2 + Phase 9 enhancement)
   static const String profile = '$base/users/profile';
+  static const String userLocation = '$base/users/location';
 
   // Farms (Phase 2)
   static const String farms = '$base/farms';
@@ -45,6 +46,10 @@ class ApiEndpoints {
   // History (Phase 9)
   static const String history = '$base/history';
   static String historyDetail(String id) => '$base/history/$id';
+
+  // Market (Objective 3)
+  static const String marketCrops = '$base/market/crops';
+  static String marketOutlook(String crop) => '$base/market/$crop/outlook';
 
   // System
   static const String health = '/health';

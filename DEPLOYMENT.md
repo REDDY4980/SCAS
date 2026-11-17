@@ -27,7 +27,7 @@ you'll be connecting this repo.
 **Free tier note:** Render's free web services spin down after 15
 minutes of inactivity and take ~30-60s to wake up on the next request
 — expect a slow first request after idle periods. The free Postgres
-instance is also time-limited (expires after 90 days on Render's free
+instance is also time-limited (expires after 30 days on Render's free
 tier); when that happens, create a new free Postgres (on Render, or an
 external option like Neon/Supabase) and update `DATABASE_URL`.
 
@@ -75,7 +75,7 @@ looks off.
   first request after that can take 30-60s while it wakes up (OCR
   requests specifically may need the `ocrTimeout` headroom already
   built into the Flutter app — see `mobile/lib/config/app_config.dart`).
-- **Database expiry**: Render's free Postgres is deleted after 90
+- **Database expiry**: Render's free Postgres expires after 30
   days. For a longer-lived public demo, consider a persistent free
   Postgres from Neon or Supabase instead, and point `DATABASE_URL` at
   that.

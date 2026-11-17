@@ -27,8 +27,16 @@ RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
-COPY ml/artifacts ./ml/artifacts
 COPY datasets ./datasets
+COPY ml ./ml
+
+# Train the crop model INSIDE the image. The trained *.joblib files are
+# gitignored, so a fresh clone (Render, CI, a teammate's laptop) has no
+# model and /recommendation would fail with ModelNotLoadedError while
+# /health still reports OK. Training is deterministic (seed 42, fixed
+# Optuna TPE seed) and takes ~1 minute, and it runs against exactly the
+# library versions pinned above, so the pickle always loads.
+RUN python -m ml.training.run_training --trials 20 --out /app/ml/artifacts
 
 # PaddleOCR's own first-use auto-downloader (det/cls/rec model weights,
 # ~16MB, from PaddlePaddle's CDN) is unreliable in this environment —
@@ -51,6 +59,7 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     AGRONOMIC_RULES_PATH=/app/datasets/agronomic_rules/agronomic_rules_v1.json \
     FERTILIZER_KB_PATH=/app/datasets/fertilizer_knowledge_base/fertilizer_knowledge_base_v1.json \
+    MARKET_DATA_DIR=/app/datasets/market \
     MODEL_PATH=/app/ml/artifacts/model.joblib \
     LABEL_ENCODER_PATH=/app/ml/artifacts/label_encoder.joblib \
     FEATURE_SCHEMA_PATH=/app/ml/artifacts/feature_schema.json

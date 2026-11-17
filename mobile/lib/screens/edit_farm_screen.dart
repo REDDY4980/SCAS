@@ -6,6 +6,7 @@ import '../models/farm.dart';
 import '../providers/farm_provider.dart';
 import '../providers/repository_providers.dart';
 import '../services/api_exception.dart';
+import '../services/location_service.dart';
 import '../widgets/common_widgets.dart';
 
 /// Edit Farm — lets a farmer fix a farm's location text (District/State,
@@ -34,6 +35,36 @@ class _EditFarmScreenState extends ConsumerState<EditFarmScreen> {
   bool _submitting = false;
   String? _loadError;
   String? _submitError;
+  Farm? _farm;
+  bool _locating = false;
+
+  /// Farmer is standing on the farm: save the device GPS position as the
+  /// farm's location (and on the profile). Replaces a district-level guess.
+  Future<void> _useCurrentLocation() async {
+    setState(() => _locating = true);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final r = await LocationService.detect();
+      if (!r.ok) {
+        messenger.showSnackBar(SnackBar(content: Text(r.message)));
+        return;
+      }
+      await ref.read(authRepositoryProvider).updateLocation(
+            latitude: r.latitude!,
+            longitude: r.longitude!,
+            accuracyM: r.accuracyM,
+            applyToFarmId: widget.farmId,
+          );
+      final farm = await ref.read(farmRepositoryProvider).getFarm(widget.farmId);
+      await ref.read(farmListProvider.notifier).load();
+      if (mounted) setState(() => _farm = farm);
+      messenger.showSnackBar(SnackBar(content: Text('${r.message}. Saved as this farm\'s location.')));
+    } on ApiException catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text(e.message)));
+    } finally {
+      if (mounted) setState(() => _locating = false);
+    }
+  }
 
   @override
   void initState() {
@@ -54,6 +85,7 @@ class _EditFarmScreenState extends ConsumerState<EditFarmScreen> {
       _villageController.text = farm.village ?? '';
       _soilTypeController.text = farm.soilType ?? '';
       _areaController.text = farm.areaAcres?.toString() ?? '';
+      _farm = farm;
       if (!mounted) return;
       setState(() => _loading = false);
     } on ApiException catch (e) {
@@ -178,6 +210,22 @@ class _EditFarmScreenState extends ConsumerState<EditFarmScreen> {
                             'State and District spelling above — we use them to find '
                             'your farm automatically.',
                             style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Card(
+                          child: ListTile(
+                            leading: Icon(_farm?.hasGps ?? false ? Icons.my_location : Icons.location_searching),
+                            title: Text(_farm?.hasGps ?? false
+                                ? 'Location saved from GPS'
+                                    '${_farm?.locationAccuracyM != null ? ' (within ${_farm!.locationAccuracyM!.round()} m)' : ''}'
+                                : _farm?.hasCoordinates ?? false
+                                    ? 'Approximate location (from district)'
+                                    : 'No location saved yet'),
+                            subtitle: const Text('Standing on this farm? Save its exact location.'),
+                            trailing: _locating
+                                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                                : TextButton(onPressed: _useCurrentLocation, child: const Text('Use GPS')),
                           ),
                         ),
                         if (_submitError != null) ...[

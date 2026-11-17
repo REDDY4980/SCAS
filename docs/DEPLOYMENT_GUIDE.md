@@ -43,7 +43,7 @@ This runs, in order (Vol 16.4):
 1. postgres container starts, waits for healthy (pg_isready)
 2. backend container builds (installs requirements.txt -- this includes PaddleOCR/PaddlePaddle/OpenCV/XGBoost/Optuna, so the first build is slow, plausibly 5-15 minutes depending on connection)
 3. backend's entrypoint.sh waits for Postgres to accept connections, then runs `alembic upgrade head` (creates all 8 tables from alembic/versions/0001_initial_schema.py), then starts uvicorn
-4. The real trained ML model (ml/artifacts/*.joblib, already in this repo from Phase 6 -- 98.64% test accuracy on the real Requirement 1 dataset) is bind-mounted read-only into the container, so /recommendation works immediately without a separate seeding step
+4. The crop model (ml/artifacts/*.joblib) is **not** stored in git. The backend Dockerfile trains it during `docker build` (`python -m ml.training.run_training --trials 20`, deterministic, ~1 minute, 99.09% test accuracy), so /recommendation works immediately in any image built from a fresh clone. For non-Docker local runs, run that command once from the repo root first.
 
 ### 3. Verify health
 
@@ -79,7 +79,7 @@ Every phase's completion doc already flags its own specific gap. Consolidated he
 | Docker / Postgres (Phase 1, this phase) | Config complete, never run | This entire guide is the first real end-to-end run |
 | Flutter app (Phase 3) | Code complete, never compiled | flutter analyze is the mandatory first step -- see docs/PHASE_3_COMPLETION.md |
 
-Everything else -- the entire backend business logic, the trained ML model, the agronomic/fertilizer rule engines -- has been verified by 160 passing automated tests (94% backend / 87% ML coverage) against real data throughout Phases 1-2, 4-9.
+Everything else -- the entire backend business logic, the trained ML model, the agronomic/fertilizer rule engines -- has been verified by 182 passing automated tests (plus 25 objective-wise acceptance tests) (94% backend / 87% ML coverage) against real data throughout Phases 1-2, 4-9.
 
 ## Rollback
 

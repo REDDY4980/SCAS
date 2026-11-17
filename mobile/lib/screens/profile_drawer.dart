@@ -105,9 +105,10 @@ class ProfileDrawer extends ConsumerWidget {
               _DrawerItem(
                 icon: Icons.bar_chart_outlined,
                 label: s.t('market'),
-                comingSoon: true,
-                comingSoonLabel: s.t('comingSoon'),
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push(AppRoutes.market);
+                },
               ),
               _DrawerItem(
                 icon: Icons.error_outline,
