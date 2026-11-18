@@ -35,11 +35,10 @@ fi
 echo "[entrypoint] Running Alembic migrations..."
 alembic upgrade head
 
-# PaddleOCR is warmed up inside app/main.py's FastAPI lifespan startup,
-# not here — a separate `python3 -c "..."` subprocess reliably crashes
-# loading it (reproduced repeatedly against this exact image), while
-# the identical call succeeds every time inside the actual uvicorn
-# worker process below. See app/ocr/engine.py's warm_up() docstring.
+# OCR models are NOT loaded at startup: they load lazily, once, on the
+# first soil-report OCR request (app/ocr/engine.py). Exactly ONE Uvicorn
+# worker — every extra worker would hold its own copy of the OCR and crop
+# models, which does not fit Render's 512 MB free tier.
 
 echo "[entrypoint] Starting SCAS backend..."
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000
+exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1

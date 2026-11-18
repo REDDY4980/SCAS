@@ -73,7 +73,23 @@ class WeatherService:
             raise HTTPException(status.HTTP_404_NOT_FOUND, "Farm not found.")
         return farm
 
+    def _ensure_coordinates(self, farm: Farm) -> None:
+        """A farm saved while geocoding was briefly unavailable has no
+        coordinates; resolve them now (once — they are saved on the farm)
+        instead of refusing weather until the farmer edits the farm."""
+        if farm.latitude is not None and farm.longitude is not None:
+            return
+        from app.services.farm_service import FarmService  # local: avoid import cycle
+
+        latitude, longitude, source = FarmService(self.farm_repo)._geocode(
+            district=farm.district, state=farm.state
+        )
+        if latitude is not None and longitude is not None:
+            self.farm_repo.update(farm, latitude=latitude, longitude=longitude, location_source=source)
+            logger.info("Farm %s had no coordinates; resolved from district/state (%s).", farm.id, source)
+
     def _validate_coordinates(self, farm: Farm) -> None:
+        self._ensure_coordinates(farm)
         if farm.latitude is None or farm.longitude is None:
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST,

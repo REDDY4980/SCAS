@@ -36,9 +36,17 @@ python-multipart==0.0.32
 # HTTP client (weather integration)
 httpx==0.28.1
 
-# OCR & image preprocessing (Vol 7) — full scan-a-document feature
-paddleocr==2.8.1
-paddlepaddle==2.6.2
+# OCR & image preprocessing (Vol 7) — full scan-a-document feature.
+# The bundled PP-OCR models (ml/paddleocr_models/onnx) run on ONNX Runtime
+# via app/ocr/ppocr_onnx.py, a faithful port of PaddleOCR 2.8.1's pipeline.
+# PaddleOCR + PaddlePaddle themselves were removed from the runtime image:
+# they need ~1 GB+ RSS for OCR (measured), which cannot fit Render's 512 MB
+# free tier; the ONNX path produces identical text at a fraction of the
+# memory (docs/OCR_MEMORY_REPORT.md). requirements-paddle.txt restores the
+# optional OCR_BACKEND=paddle engine.
+onnxruntime==1.19.2
+pyclipper==1.4.0
+shapely==2.2.0
 opencv-python-headless==4.10.0.84
 Pillow==10.4.0
 pypdfium2==4.30.0

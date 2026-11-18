@@ -12,8 +12,10 @@ OCR -> persist metadata -> return tracking ID).
 from __future__ import annotations
 
 import logging
+import threading
 import time
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
 
 from fastapi import HTTPException, UploadFile, status
@@ -22,7 +24,13 @@ from app.core.config import get_settings
 from app.models.farm import Farm
 from app.models.user import User
 from app.ocr import field_parser, layout, preprocessing, validation
-from app.ocr.engine import OCREngine, get_ocr_engine
+from app.ocr.engine import (
+    OCRBusyError,
+    OCREngine,
+    OCRInitializationError,
+    get_ocr_engine,
+    ocr_slot,
+)
 from app.repositories.farm_repository import FarmRepository
 from app.repositories.soil_repository import SoilRepository
 from app.schemas.soil import (
@@ -56,6 +64,30 @@ _PERSISTABLE_FIELDS = {
     "copper",
     "boron",
 }
+
+
+# Report ids with an OCR run in progress in THIS process. In-memory on
+# purpose: the backend runs a single Uvicorn worker (entrypoint.sh), and if
+# the process dies mid-run the set is empty again on restart, so the
+# report — left in `processing` in the database — can simply be retried.
+_in_flight: set[uuid.UUID] = set()
+_in_flight_lock = threading.Lock()
+
+
+@contextmanager
+def _in_flight_guard(report_id: uuid.UUID):
+    with _in_flight_lock:
+        if report_id in _in_flight:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "This soil report is already being processed. Please wait for it to finish.",
+            )
+        _in_flight.add(report_id)
+    try:
+        yield
+    finally:
+        with _in_flight_lock:
+            _in_flight.discard(report_id)
 
 
 class SoilService:
@@ -142,25 +174,70 @@ class SoilService:
         )
 
     def run_ocr(self, user: User, report_id: uuid.UUID) -> OCRTriggerOut:
+        """
+        Runs OCR on a stored report, one page at a time (see
+        docs/OCR_MEMORY_REPORT.md):
+
+        * a second OCR request for a report that is already being processed
+          gets 409 instead of a duplicate run (double-taps/client retries
+          would otherwise double peak memory);
+        * at most OCR_MAX_CONCURRENT documents are processed at once —
+          beyond that, requests wait up to OCR_QUEUE_TIMEOUT_SECONDS, then 503;
+        * each page is rendered -> pre-processed -> OCR'd -> reduced to text
+          lines and released before the next page is rendered;
+        * any failure leaves the report in `failed` (never stuck in
+          `processing`), the original upload is untouched, and the same
+          report id can simply be retried.
+        """
         report = self._get_owned_report_or_404(user, report_id)
 
+        with _in_flight_guard(report.id):
+            try:
+                with ocr_slot():
+                    return self._run_ocr_pipeline(report)
+            except OCRBusyError as exc:
+                raise HTTPException(
+                    status.HTTP_503_SERVICE_UNAVAILABLE,
+                    "The soil report reader is busy with another report. Please try again in a minute.",
+                ) from exc
+
+    def _run_ocr_pipeline(self, report) -> OCRTriggerOut:
+        report_id = report.id
+        self.soil_repo.update_ocr_status(report, status="processing", confidence=report.ocr_confidence)
+
         start = time.monotonic()
+        all_lines: list[str] = []
+        confidences: list[float] = []
+        page_count = 0
         try:
-            page_images = preprocessing.preprocess_file(report.file_path)
+            engine = self._engine()
+            for image in preprocessing.iter_preprocessed_pages(report.file_path):
+                page_result = engine.extract(image)
+                del image  # release the page before the next one is rendered
+                page_count += 1
+                confidences.append(page_result.average_confidence)
+                all_lines.extend(layout.reconstruct_rows(page_result))
+                del page_result
+        except preprocessing.DocumentError as exc:
+            logger.warning("Document rejected for report %s: %s", report_id, exc)
+            self.soil_repo.update_ocr_status(report, status="failed", confidence=None)
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, exc.user_message) from exc
+        except OCRInitializationError as exc:
+            logger.exception("OCR engine could not be initialised (report %s)", report_id)
+            self.soil_repo.update_ocr_status(report, status="failed", confidence=None)
+            raise HTTPException(
+                status.HTTP_503_SERVICE_UNAVAILABLE,
+                "The soil report reader is temporarily unavailable. Please try again later, "
+                "or enter the soil values manually.",
+            ) from exc
         except Exception as exc:
-            logger.exception("Pre-processing failed for report %s", report_id)
+            logger.exception("OCR failed for report %s after %d page(s)", report_id, page_count)
             self.soil_repo.update_ocr_status(report, status="failed", confidence=None)
             raise HTTPException(
                 status.HTTP_422_UNPROCESSABLE_CONTENT,
-                "Could not process the uploaded file. Please re-upload a clearer scan or photo.",
+                "Could not read the uploaded report. Please re-upload a clearer scan or photo, "
+                "or enter the soil values manually.",
             ) from exc
-
-        all_lines: list[str] = []
-        confidences: list[float] = []
-        for image in page_images:
-            page_result = self._engine().extract(image)
-            confidences.append(page_result.average_confidence)
-            all_lines.extend(layout.reconstruct_rows(page_result))
 
         overall_confidence = sum(confidences) / len(confidences) if confidences else 0.0
 
@@ -175,16 +252,25 @@ class SoilService:
                 report_id,
                 sorted(skipped_fields),
             )
-        result = validation.validate_soil_values(persistable_values, overall_confidence)
+        if parsed.conflicts:
+            logger.info(
+                "Report %s: conflicting readings for %s -> manual review",
+                report_id,
+                sorted(parsed.conflicts),
+            )
+        result = validation.validate_soil_values(
+            persistable_values, overall_confidence, conflicting_values=parsed.conflicts
+        )
 
         elapsed = time.monotonic() - start
         logger.info(
-            "OCR pipeline for report %s: status=%s confidence=%.2f elapsed=%.2fs pages=%d",
+            "OCR pipeline for report %s: status=%s confidence=%.2f elapsed=%.2fs pages=%d fields=%d",
             report_id,
             result.status,
             overall_confidence,
             elapsed,
-            len(page_images),
+            page_count,
+            len(persistable_values),
         )
 
         params = None
@@ -210,10 +296,19 @@ class SoilService:
         if not fields:
             raise HTTPException(status.HTTP_400_BAD_REQUEST, "No correction values supplied.")
 
-        self.soil_repo.upsert_parameters(report, **fields)
+        params = self.soil_repo.upsert_parameters(report, **fields)
         # A human has now verified/corrected the values — treat as fully
-        # validated regardless of the original OCR confidence.
-        updated_report = self.soil_repo.update_ocr_status(report, status="success", confidence=1.0)
+        # validated regardless of the original OCR confidence, but ONLY if
+        # every mandatory parameter is now present. An incomplete report
+        # must never become `success`: recommendations use the farm's latest
+        # successful report, so it would also hide an earlier complete one.
+        missing = [f for f in validation.CORE_MANDATORY_FIELDS if getattr(params, f) is None]
+        if missing:
+            updated_report = self.soil_repo.update_ocr_status(
+                report, status="needs_review", confidence=report.ocr_confidence
+            )
+        else:
+            updated_report = self.soil_repo.update_ocr_status(report, status="success", confidence=1.0)
         return SoilReportOut.model_validate(updated_report)
 
     def get_report(self, user: User, report_id: uuid.UUID) -> SoilReportOut:

@@ -32,6 +32,10 @@ _MONTH_TO_SEASON = {
 }
 
 
+# A 30-day total needs most of its days; otherwise fall back (see below).
+_MIN_DAYS_FOR_WINDOW = 25
+
+
 @dataclass
 class NormalizedWeather:
     temperature: float | None
@@ -61,8 +65,23 @@ def normalize_open_meteo(response: RawWeatherResponse) -> NormalizedWeather:
         except ValueError:
             pass  # keep the now() fallback; malformed timestamp is not fatal
 
+    # Rainfall for the crop model: total precipitation over the last 30
+    # complete days (`past_days=30`, today excluded). The model was trained
+    # on rainfall of 20-298 mm (datasets/crop_recommendation), i.e. a
+    # monthly-scale amount; today's rain alone is 0 mm on most days, which
+    # made every farm look equally dry (measured live: four farms with
+    # 25-256 mm over 30 days all sent 0.0). Older/other payloads without
+    # the 30-day series keep the previous behaviour (today's rain_sum,
+    # then the instant precipitation reading).
+    precip_series = daily.get("precipitation_sum") or []
+    past_days = [v for v in precip_series[:-1] if v is not None]
     rain_sum_list = daily.get("rain_sum") or []
-    rainfall = float(rain_sum_list[0]) if rain_sum_list else current.get("precipitation")
+    if len(precip_series) > 1 and len(past_days) >= _MIN_DAYS_FOR_WINDOW:
+        rainfall = round(sum(float(v) for v in past_days), 1)
+    elif rain_sum_list:
+        rainfall = float(rain_sum_list[-1] if len(rain_sum_list) > 1 else rain_sum_list[0])
+    else:
+        rainfall = current.get("precipitation")
 
     return NormalizedWeather(
         temperature=_as_float(current.get("temperature_2m")),

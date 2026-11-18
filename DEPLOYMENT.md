@@ -16,9 +16,10 @@ you'll be connecting this repo.
 3. Render detects `render.yaml` at the repo root and shows two
    resources: `scas-backend` (web service) and `scas-db` (Postgres).
    Click **Apply**.
-4. First build will take a while (PaddleOCR + PaddlePaddle are large
-   dependencies) — expect 10-20 minutes, not the usual couple of
-   minutes for a plain Python service. This is normal, not stuck.
+4. First build takes several minutes (Python dependencies, plus the
+   crop model is trained inside the image). OCR runs the bundled PP-OCR
+   models on ONNX Runtime — PaddlePaddle is no longer installed, see
+   `docs/OCR_MEMORY_REPORT.md`.
 5. Once live, open the service and copy its URL, e.g.
    `https://scas-backend-xxxx.onrender.com`. Confirm it's actually
    healthy: visit `<that-url>/health` — should return
@@ -72,9 +73,24 @@ looks off.
 ## Notes / limitations of the free tier
 
 - **Cold starts**: the free backend sleeps after 15 min idle; the
-  first request after that can take 30-60s while it wakes up (OCR
-  requests specifically may need the `ocrTimeout` headroom already
-  built into the Flutter app — see `mobile/lib/config/app_config.dart`).
+  first request after that can take 30-60s while it wakes up.
+- **OCR speed on the free tier (0.1 CPU)**: reading a soil report takes
+  roughly 2 minutes per page (measured in a container limited to 0.1 CPU /
+  512 MB; ~10x faster on 1 CPU). Memory stays far inside 512 MB (peak
+  ~365 MB measured). The Flutter app waits up to 15 minutes
+  (`ocrTimeout` in `mobile/lib/config/app_config.dart`) and polls the
+  report if the connection drops, so the frontend must be rebuilt and
+  redeployed together with the backend. Only one report is OCR'd at a
+  time; others queue (`OCR_QUEUE_TIMEOUT_SECONDS`, default 300 s).
+- **Weather & farm location** use Open-Meteo (no key). Farms saved without
+  GPS are located from district/state; rainfall given to the crop model is
+  the last 30 days' total. See `docs/OCR_MEMORY_REPORT.md` §4b.
+- **OCR settings** (all optional, safe defaults — none need to be set on
+  Render): `OCR_MAX_PDF_PAGES` (5), `OCR_PDF_DPI` (200),
+  `OCR_MAX_IMAGE_DIMENSION` (1600), `OCR_MAX_IMAGE_PIXELS` (60,000,000),
+  `OCR_MAX_CONCURRENT` (1), `OCR_QUEUE_TIMEOUT_SECONDS` (300),
+  `OCR_NUM_THREADS` (1), `OCR_USE_ANGLE_CLS` (true), `OCR_AUTO_ROTATE`
+  (true), `OCR_BACKEND` (onnx), `OCR_MODEL_DIR` (set in the Dockerfile).
 - **Database expiry**: Render's free Postgres expires after 30
   days. For a longer-lived public demo, consider a persistent free
   Postgres from Neon or Supabase instead, and point `DATABASE_URL` at

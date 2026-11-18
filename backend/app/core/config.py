@@ -10,7 +10,7 @@ No secrets are hardcoded in source code (Vol 0.7 Rule 5).
 """
 
 from functools import lru_cache
-from typing import List
+from typing import List, Literal
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -60,6 +60,41 @@ class Settings(BaseSettings):
 
     # --- OCR ---
     ocr_confidence_threshold: float = Field(default=0.85, alias="OCR_CONFIDENCE_THRESHOLD")
+    # Inference backend for the PP-OCR models. "onnx" (default) runs the
+    # bundled PP-OCR weights on ONNX Runtime and fits Render's 512 MB free
+    # tier; "paddle" runs them on PaddlePaddle and needs
+    # requirements-paddle.txt plus well over 512 MB (see
+    # docs/OCR_MEMORY_REPORT.md). Both produce identical text.
+    ocr_backend: Literal["onnx", "paddle"] = Field(default="onnx", alias="OCR_BACKEND")
+    # Directory holding det.onnx / rec.onnx / cls.onnx / en_dict.txt.
+    # None = resolve ml/paddleocr_models/onnx relative to the code.
+    ocr_model_dir: str | None = Field(default=None, alias="OCR_MODEL_DIR")
+    ocr_use_angle_cls: bool = Field(default=True, alias="OCR_USE_ANGLE_CLS")
+    # Turn pages scanned/photographed sideways (90/270 degrees) upright
+    # before recognition. Without it, a sideways card's table is read
+    # transposed and no parameter can be matched to its value.
+    ocr_auto_rotate: bool = Field(default=True, alias="OCR_AUTO_ROTATE")
+    ocr_num_threads: int = Field(default=1, ge=1, le=8, alias="OCR_NUM_THREADS")
+    # One document at a time keeps peak memory bounded: every concurrent
+    # OCR run adds its own page image + model activations on top.
+    ocr_max_concurrent: int = Field(default=1, ge=1, le=4, alias="OCR_MAX_CONCURRENT")
+    # How long a request waits for a free OCR slot before getting 503.
+    # On Render's free tier (0.1 CPU) one report takes ~2-5 minutes, so a
+    # second farmer queues behind the first instead of failing. A waiting
+    # request holds no image or model memory.
+    ocr_queue_timeout_seconds: float = Field(
+        default=300.0, ge=0.0, le=900.0, alias="OCR_QUEUE_TIMEOUT_SECONDS"
+    )
+    ocr_max_pdf_pages: int = Field(default=5, ge=1, le=50, alias="OCR_MAX_PDF_PAGES")
+    ocr_pdf_dpi: int = Field(default=200, ge=72, le=400, alias="OCR_PDF_DPI")
+    ocr_max_image_dimension: int = Field(
+        default=1600, ge=640, le=4000, alias="OCR_MAX_IMAGE_DIMENSION"
+    )
+    # Uploaded photos above this pixel count are rejected before decoding
+    # (a 10 MB PNG can otherwise decode to several GB).
+    ocr_max_image_pixels: int = Field(
+        default=60_000_000, ge=1_000_000, le=200_000_000, alias="OCR_MAX_IMAGE_PIXELS"
+    )
 
     # --- Rules ---
     # None (rather than a hardcoded default) lets AgronomicRuleEngine fall

@@ -1,0 +1,13 @@
+# OPTIONAL — only for OCR_BACKEND=paddle (parity checks / hosts with >1 GB RAM).
+# Not installed in the production Docker image: PaddleOCR on PaddlePaddle
+# peaks at ~1 GB RSS for one soil report even with SCAS's memory fixes
+# (docs/OCR_MEMORY_REPORT.md), far above Render's 512 MB free tier.
+#
+#   pip install -r requirements.txt -r requirements-paddle.txt
+#   OCR_BACKEND=paddle
+#
+# PaddleOCR loads its weights from ~/.paddleocr/whl; copy the bundled ones:
+#   cp -r ml/paddleocr_models/whl ~/.paddleocr/
+paddleocr==2.8.1
+paddlepaddle==2.6.2
+setuptools

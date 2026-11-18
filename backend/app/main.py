@@ -24,7 +24,6 @@ from app.core.config import get_settings
 from app.core.database import engine
 from app.core.exception_handlers import register_exception_handlers
 from app.core.logging_config import configure_logging
-from app.ocr.engine import get_ocr_engine
 from app.schemas.common import success_response
 
 configure_logging()
@@ -64,19 +63,12 @@ async def lifespan(app: FastAPI):
         )
         raise
 
-    # Warm up PaddleOCR now, inside this actual server process, rather
-    # than paying its model-load cost on whichever farmer's upload
-    # happens to be the first request after startup — see
-    # app/ocr/engine.py's warm_up() docstring for why this specifically
-    # cannot be done as a separate subprocess (Dockerfile RUN /
-    # entrypoint.sh step) instead. Best-effort: must not block startup
-    # on a transient failure, since app/ocr/engine.py's own lazy-load
-    # still runs on the first real request either way.
-    try:
-        get_ocr_engine().warm_up()
-        logger.info("OCR engine warmed up.")
-    except Exception:
-        logger.exception("OCR engine warm-up failed (non-fatal) — will load lazily on first request.")
+    # OCR models are deliberately NOT loaded here. They load lazily, once,
+    # on the first soil-report OCR request (app/ocr/engine.py), so the
+    # Render free-tier instance (512 MB) only pays for them when a farmer
+    # actually scans a report, and every other endpoint is unaffected by
+    # OCR. The previous eager PaddleOCR warm-up alone put startup at
+    # ~690 MB RSS (docs/OCR_MEMORY_REPORT.md).
 
     # Load the crop model now so a missing/unloadable model shows up in the
     # startup log immediately, instead of as a 500 on a farmer's first

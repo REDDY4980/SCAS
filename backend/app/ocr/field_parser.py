@@ -74,6 +74,12 @@ class ParsedReport:
     metadata: dict[str, str] = field(default_factory=dict)
     unmatched_lines: list[str] = field(default_factory=list)
     matched_fields: list[ParsedField] = field(default_factory=list)
+    # field -> every DIFFERENT value read for it, the kept (first) value
+    # first. The first match still wins (`values` is unchanged), but a
+    # report whose pages disagree must never be auto-accepted: e.g. a
+    # textbook page mentioning "Zinc sulphate (15 ...)" before the real
+    # results table ("Zinc (Zn) 0.27 ppm").
+    conflicts: dict[str, list[float]] = field(default_factory=dict)
 
 
 def _find_unit_hint(line: str) -> str | None:
@@ -94,6 +100,21 @@ def _extract_number_after(line: str, keyword_end: int) -> tuple[str, float] | No
         return raw, float(raw)
     except ValueError:
         return None
+
+
+def _record_conflict(report: ParsedReport, name: str, patterns: list[str], line: str) -> None:
+    for pattern in patterns:
+        kw_match = re.search(pattern, line, re.IGNORECASE)
+        if kw_match is None:
+            continue
+        extracted = _extract_number_after(line, kw_match.end())
+        if extracted is None:
+            continue
+        _raw, value = extracted
+        seen = report.conflicts.get(name, [report.values[name]])
+        if all(abs(value - known) > 1e-9 for known in seen):
+            report.conflicts[name] = seen + [value]
+        return
 
 
 def parse_lines(lines: list[str]) -> ParsedReport:
@@ -134,7 +155,10 @@ def parse_lines(lines: list[str]) -> ParsedReport:
         # Numeric soil-parameter fields.
         for canonical_name, patterns in _FIELD_PATTERNS:
             if canonical_name in claimed_field_names:
-                continue  # first match per field wins; avoid rating-table overwrite
+                # First match per field wins (avoids rating-table
+                # overwrite); a different reading is only recorded.
+                _record_conflict(report, canonical_name, patterns, line)
+                continue
             for pattern in patterns:
                 kw_match = re.search(pattern, line, re.IGNORECASE)
                 if kw_match is None:

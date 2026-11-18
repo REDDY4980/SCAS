@@ -19,6 +19,12 @@ os.environ.setdefault(
     "DATABASE_URL", "postgresql://scas_user:pw@localhost:5432/scas_db"
 )
 os.environ.setdefault("UPLOAD_DIRECTORY", "/tmp/scas_test_uploads")
+# Hermetic tests: weather/geocoding providers point at a closed local port
+# (connection refused immediately). Tests that need provider responses
+# monkeypatch httpx.get; nothing in the suite may depend on live
+# Open-Meteo being reachable (or not) from wherever the tests run.
+os.environ.setdefault("OPEN_METEO_BASE_URL", "http://127.0.0.1:9/v1")
+os.environ.setdefault("GEOCODING_BASE_URL", "http://127.0.0.1:9/v1/search")
 os.environ.setdefault(
     "MODEL_PATH",
     str(Path(__file__).resolve().parents[2] / "ml" / "artifacts" / "model.joblib"),

@@ -60,18 +60,23 @@ def reconstruct_rows(result: OCRPageResult, y_tolerance: float = 15.0) -> list[s
 
     rows: list[list[tuple[float, str]]] = []
     current_row: list[tuple[float, str]] = []
-    last_y: float | None = None
+    row_y_sum = 0.0
 
     for y, x, text in indexed:
-        if last_y is None or abs(y - last_y) <= y_tolerance:
+        # Compare against the CURRENT ROW'S mean vertical centre, not just
+        # the previously added fragment. Comparing only neighbour-to-
+        # neighbour lets fragments from a second table with a different row
+        # grid (e.g. a fertilizer table beside the results table, sitting
+        # half a row lower) chain two result rows together:
+        # "Sulphur (S) Zinc (Zn) 5.15 0.18" — which paired zinc with
+        # sulphur's value on a real Soil Health Card.
+        if not current_row or abs(y - row_y_sum / len(current_row)) <= y_tolerance:
             current_row.append((x, text))
+            row_y_sum += y
         else:
             rows.append(current_row)
             current_row = [(x, text)]
-        # Rolling comparison against the most recently added line, not
-        # the row's first line — otherwise a generous tolerance lets
-        # unrelated lines merge transitively across many small steps.
-        last_y = y
+            row_y_sum = y
     if current_row:
         rows.append(current_row)
 

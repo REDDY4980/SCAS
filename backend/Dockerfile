@@ -11,7 +11,7 @@
 # mounts at all, so the image must be self-contained.
 FROM python:3.11-slim AS base
 
-# System deps required by OpenCV / PaddleOCR / psycopg2 at runtime
+# System deps required by OpenCV / psycopg2 at runtime
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1 \
     libglib2.0-0 \
@@ -38,20 +38,17 @@ COPY ml ./ml
 # library versions pinned above, so the pickle always loads.
 RUN python -m ml.training.run_training --trials 20 --out /app/ml/artifacts
 
-# PaddleOCR's own first-use auto-downloader (det/cls/rec model weights,
-# ~16MB, from PaddlePaddle's CDN) is unreliable in this environment —
-# reproduced twice: it either takes several minutes on a slow link (an
-# earlier local-dev incident, see git history) or produces a truncated/
-# corrupted file that crashes on load ("munmap_chunk(): invalid
-# pointer" / "free(): invalid pointer", both observed testing this
-# exact image). On a host with no persistent disk (e.g. Render's free
-# tier, which starts empty on every cold start after the service
-# sleeps), that isn't a one-time cost — it repeats on every wake-up and
-# reliably exceeds the app's client-side OCR timeout. Shipping the
-# already-downloaded, already-verified-working files directly avoids
-# the flaky downloader entirely rather than retrying it at a different
-# point in the container lifecycle.
-COPY ml/paddleocr_models/whl /root/.paddleocr/whl
+# OCR models: the bundled PP-OCR weights (en_PP-OCRv3_det, en_PP-OCRv4_rec,
+# ch_ppocr_mobile_v2.0_cls), converted 1:1 to ONNX, ship inside the repo at
+# ml/paddleocr_models/onnx/ and are copied with `COPY ml ./ml` above —
+# nothing is ever downloaded at runtime. They run on ONNX Runtime
+# (app/ocr/ppocr_onnx.py); PaddlePaddle is not installed in this image
+# because it cannot fit Render's 512 MB free tier
+# (docs/OCR_MEMORY_REPORT.md). Fail the build if a model file is missing.
+RUN test -s /app/ml/paddleocr_models/onnx/det.onnx \
+    && test -s /app/ml/paddleocr_models/onnx/rec.onnx \
+    && test -s /app/ml/paddleocr_models/onnx/cls.onnx \
+    && test -s /app/ml/paddleocr_models/onnx/en_dict.txt
 
 RUN mkdir -p /app/storage/uploads /app/storage/logs
 
@@ -62,7 +59,10 @@ ENV PYTHONUNBUFFERED=1 \
     MARKET_DATA_DIR=/app/datasets/market \
     MODEL_PATH=/app/ml/artifacts/model.joblib \
     LABEL_ENCODER_PATH=/app/ml/artifacts/label_encoder.joblib \
-    FEATURE_SCHEMA_PATH=/app/ml/artifacts/feature_schema.json
+    FEATURE_SCHEMA_PATH=/app/ml/artifacts/feature_schema.json \
+    OCR_MODEL_DIR=/app/ml/paddleocr_models/onnx \
+    OMP_NUM_THREADS=1 \
+    MALLOC_ARENA_MAX=2
 
 EXPOSE 8000
 

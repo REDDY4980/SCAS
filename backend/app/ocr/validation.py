@@ -49,9 +49,17 @@ class ValidationResult:
     warnings: list[str] = field(default_factory=list)
 
 
-def validate_soil_values(values: dict[str, float], ocr_confidence: float) -> ValidationResult:
+def validate_soil_values(
+    values: dict[str, float],
+    ocr_confidence: float,
+    conflicting_values: dict[str, list[float]] | None = None,
+) -> ValidationResult:
+    """`conflicting_values`: fields for which the report contained more than
+    one different reading (field_parser.ParsedReport.conflicts). Such a
+    report always needs human review — the kept value may be the wrong one."""
     settings = get_settings()
     warnings: list[str] = []
+    conflicts = {k: v for k, v in (conflicting_values or {}).items() if k in values}
 
     missing_core = [f for f in CORE_MANDATORY_FIELDS if f not in values]
     out_of_range: list[str] = []
@@ -66,6 +74,16 @@ def validate_soil_values(values: dict[str, float], ocr_confidence: float) -> Val
             f"Micronutrient fields not detected (may be absent from this report format): "
             f"{', '.join(missing_micro)}"
         )
+
+    if conflicts:
+        details = "; ".join(
+            f"{name.replace('_', ' ')}: {', '.join(f'{v:g}' for v in readings)}"
+            for name, readings in sorted(conflicts.items())
+        )
+        warnings = warnings + [
+            f"The report contains different values for the same parameter ({details}). "
+            "Please check these values against your report."
+        ]
 
     if out_of_range:
         # A value outside a physically valid range (e.g. pH 17) means the
@@ -85,6 +103,15 @@ def validate_soil_values(values: dict[str, float], ocr_confidence: float) -> Val
             missing_core_fields=missing_core,
             out_of_range_fields=out_of_range,
             warnings=warnings + ["One or more mandatory soil parameters were not detected."],
+        )
+
+    if conflicts:
+        return ValidationResult(
+            is_valid=False,
+            status="needs_review",
+            missing_core_fields=missing_core,
+            out_of_range_fields=out_of_range,
+            warnings=warnings,
         )
 
     if ocr_confidence < settings.ocr_confidence_threshold:

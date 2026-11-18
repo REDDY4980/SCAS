@@ -1,0 +1,2421 @@
+{
+"source": "PaddleOCR 2.8.1 + PaddlePaddle 2.6.2 (oneDNN default), PaddleOCR(lang='en', use_angle_cls=True).ocr(img, cls=True) on app.ocr.preprocessing.preprocess_file() output, bundled models ml/paddleocr_models/whl",
+"documents": {
+"01_Karnataka_SHC_redacted_2017.pdf": [
+[
+[
+"Soil and Water Testing Lahoratory Assistant - Grade 12",
+0.9709
+],
+[
+"76",
+0.9994
+],
+[
+"Secondary and Micronutrients Recommendations",
+0.9998
+],
+[
+"Department of Agriculture, Cooperation and Farmers Welfare",
+0.9963
+],
+[
+"Ministry of Agriculture and Farmers Welfare",
+0.9997
+],
+[
+"$1.",
+0.8221
+],
+[
+"Parameter Fertilizer Recommendations for Reference Yield (wi",
+0.9923
+],
+[
+"No.",
+0.9999
+],
+[
+"Government of India.",
+0.9766
+],
+[
+"Through Soil.",
+0.94
+],
+[
+"Through Spray",
+0.9998
+],
+[
+"Department of Agriculture, Karnataka Government",
+0.9999
+],
+[
+"1",
+0.9772
+],
+[
+"Zinc (Zn)",
+0.9634
+],
+[
+"Zinc sulphate (15 -)",
+0.9872
+],
+[
+"0.5% Zinc sulphate +0.25% lim",
+0.9865
+],
+[
+"25 kg/ha)",
+0.9761
+],
+[
+"Iron (Fe)",
+0.9913
+],
+[
+"Ferrous sulphate",
+0.9999
+],
+[
+"1% Ferrous sulphate (Spray th",
+0.9952
+],
+[
+"Soil Health Card",
+0.9994
+],
+[
+"(25-50 kg/ha) (Soil",
+0.9791
+],
+[
+"application is",
+0.9877
+],
+[
+"Soil Health Card Number.",
+0.9769
+],
+[
+"preferred)",
+0.9918
+],
+[
+"Validity-Fr0m:10/09/2017To:09/09/2019",
+0.967
+],
+[
+"3",
+0.9988
+],
+[
+"Farmer's Details",
+0.9986
+],
+[
+"4",
+0.9966
+],
+[
+"Farmer Name",
+0.9997
+],
+[
+"5",
+0.9996
+],
+[
+"Father Name",
+1.0
+],
+[
+"General Recommendations",
+0.9999
+],
+[
+"Address",
+0.9997
+],
+[
+"Lime /",
+0.9939
+],
+[
+"Gypsum",
+0.9999
+],
+[
+"Mobile No.",
+0.9999
+]
+],
+[
+[
+"Soil and Water Testing Laboratory Assistant - Grade 12",
+0.9689
+],
+[
+"77",
+0.999
+],
+[
+"Gender: Male.",
+0.952
+],
+[
+"Category: General",
+0.9773
+],
+[
+"Department of Agriculture, Karnataka Government",
+0.9992
+],
+[
+"Soil Sample Details.",
+0.9663
+],
+[
+"Date of Sample Collection",
+0.9985
+],
+[
+"10/09/2017",
+0.9997
+],
+[
+"Excess use of Fertilizer is injurious to soil health and plant growth.",
+0.9873
+],
+[
+"Use fertilizer judiciously.",
+0.9991
+],
+[
+"Survey No., Khasra No./ Dag No. 88",
+0.9895
+],
+[
+"Reclaim Sodic Soil with Gypsum",
+0.9997
+],
+[
+"Farm Size, Irrigation Status",
+0.9941
+],
+[
+"2.16 Acre Irrigated (Bore well)",
+0.9865
+],
+[
+"Treat acidic soil with Lime",
+0.9544
+],
+[
+"Geo Position (GPS)",
+0.9523
+],
+[
+"Latitud",
+0.9999
+],
+[
+"Organic Manures improve Soil Health",
+0.9929
+],
+[
+"Use Saline water after mixing with canal water",
+0.9803
+],
+[
+"Use Sodic water after treating with gypsum",
+0.9928
+],
+[
+"Soil Test Results",
+0.9998
+],
+[
+"heaIth& enhancing farm income",
+0.9817
+],
+[
+"Soil Health Centre, Bagalkote",
+0.9736
+],
+[
+"Kisan toll free number: 1800-180-1551",
+0.9993
+],
+[
+"Soil Type: Black Soil.",
+0.9812
+],
+[
+"Website: https://soilhealth.dac.gov.in",
+0.9991
+],
+[
+"Parameter",
+0.9999
+],
+[
+"Test",
+0.9999
+],
+[
+"Unit",
+0.9999
+],
+[
+" Rating",
+0.9678
+],
+[
+"NormaI Leveld",
+0.9155
+],
+[
+"Value",
+0.9998
+],
+[
+"pH",
+0.96
+],
+[
+"7.70",
+0.9999
+],
+[
+"Moderately",
+0.9998
+],
+[
+"7, Neutral",
+0.9581
+],
+[
+"alkaline",
+0.9486
+],
+[
+"PSS CENTRAL INSTITUTE OF VOCATIONAL EDUCATION, NCERT, BHOPAL",
+0.9932
+]
+],
+[
+[
+"Soil and Water Testing Lahoratory Assistant - Grade 12.",
+0.9732
+],
+[
+"78",
+0.998
+],
+[
+"EC",
+0.9975
+],
+[
+"0.04",
+0.9999
+],
+[
+"dS/m",
+0.9997
+],
+[
+"Normal",
+0.9993
+],
+[
+"0-1 dS/m",
+0.9957
+],
+[
+"Organic Carbon (OC)",
+0.997
+],
+[
+"0.35",
+0.9997
+],
+[
+"%",
+0.9999
+],
+[
+"Low",
+0.9951
+],
+[
+"0.51-0.75%",
+0.9965
+],
+[
+"Available Nitrogen N)",
+0.9707
+],
+[
+"200.6",
+0.9999
+],
+[
+"kg/ha Low",
+0.9989
+],
+[
+"280-560 kg/ha",
+0.9779
+],
+[
+"Available Phosphorus (P)|4.19",
+0.9805
+],
+[
+"kg/ha",
+0.9998
+],
+[
+"Very Low",
+0.9958
+],
+[
+"23-57 kg/ha",
+0.9994
+],
+[
+"Available Potassium (K)",
+0.999
+],
+[
+"122.8",
+0.9994
+],
+[
+"kg/ha Low",
+0.9995
+],
+[
+"145-337 kg/ha",
+0.9991
+],
+[
+"Available Sulphur (S)",
+0.9963
+],
+[
+"26.50",
+0.9999
+],
+[
+"udd",
+0.8895
+],
+[
+"Sufficient",
+0.9996
+],
+[
+"> 10 ppm",
+0.9963
+],
+[
+"8",
+0.9441
+],
+[
+"Available Zinc (Zn}",
+0.983
+],
+[
+"0.27",
+0.9999
+],
+[
+"ppm",
+0.9976
+],
+[
+"Deficient",
+0.9938
+],
+[
+"> 0.6 ppm",
+0.9981
+],
+[
+"Available Boron (B)",
+0.9995
+],
+[
+"0.63",
+0.9999
+],
+[
+"ppm",
+0.9992
+],
+[
+"Sufficient",
+0.9935
+],
+[
+"> 0.5 ppm",
+0.9895
+],
+[
+"10|Available Iron (Fe)",
+0.9834
+],
+[
+"0.71",
+0.9998
+],
+[
+"ppm",
+0.9973
+],
+[
+"Deficient",
+0.9996
+],
+[
+"> 4.5 ppm",
+0.9924
+],
+[
+"11|Available Manganese",
+0.9961
+],
+[
+"6.41",
+1.0
+],
+[
+"ppm",
+0.9989
+],
+[
+"Sufficientd",
+0.9341
+],
+[
+"> 2.0 ppm",
+0.9968
+],
+[
+"(Mn)",
+0.9531
+],
+[
+"2|Available Copper (Cu)",
+0.9837
+],
+[
+"1.65",
+0.9999
+],
+[
+"udd",
+0.8756
+],
+[
+"Sufficient",
+0.9989
+],
+[
+"> 0.2 ppm",
+0.9677
+],
+[
+"PSS CENTRAL INSTITUTE OF VOCATIONAL EDUCATION, NCERT, BHOPAL",
+0.9972
+]
+],
+[
+[
+"RAL INSTITUTE OF VOCATIONAL EDUCATION, NCERT, BHOPAL",
+0.9993
+],
+[
+"ty Yield",
+0.989
+],
+[
+"& Reference Crop",
+0.9993
+],
+[
+"16 q/a",
+0.9995
+],
+[
+"15 q/a",
+0.9988
+],
+[
+"'24 q/a",
+0.9749
+],
+[
+"Stage",
+0.9981
+],
+[
+"10 t/ha",
+0.9996
+],
+[
+"FYM",
+0.9995
+],
+[
+"8 t/ha",
+0.9985
+],
+[
+"FYM",
+0.9989
+],
+[
+"13 t/ha",
+0.9998
+],
+[
+"FYM",
+0.9989
+],
+[
+"Fertilizer",
+0.9997
+],
+[
+"Organic",
+0.9884
+],
+[
+" Soil and Water Testing Laboratory Assistant - Grade 12",
+0.9945
+],
+[
+"kg/ha",
+0.9999
+],
+[
+"3.000",
+1.0
+],
+[
+"um",
+0.9988
+],
+[
+"Azospirill",
+0.9989
+],
+[
+"kg/ha",
+0.9999
+],
+[
+":0.500",
+0.9542
+],
+[
+"um",
+0.9968
+],
+[
+"Azospirill",
+0.9783
+],
+[
+"kg/ha",
+0.9954
+],
+[
+"0.500",
+0.9874
+],
+[
+"um",
+0.9942
+],
+[
+"Azospirill",
+0.9995
+],
+[
+"izer",
+0.9994
+],
+[
+"Biofertil Fertilizer Combination-I",
+0.992
+],
+[
+"(kg/ha)",
+0.9725
+],
+[
+"(MOP)",
+0.9933
+],
+[
+"Muriate of Potash",
+0.983
+],
+[
+"(SSP)",
+0.9803
+],
+[
+"Single Superphosphate",
+0.9999
+],
+[
+"Neem Coated Urea",
+0.9974
+],
+[
+"Muriate of Potash (MOP)",
+0.9964
+],
+[
+"(SSP)",
+0.9962
+],
+[
+"Single Superphosphate",
+0.9924
+],
+[
+"Neem Coated Urea",
+0.9934
+],
+[
+"Muriate of Potash (MOP)",
+0.999
+],
+[
+"(SSP)",
+0.9745
+],
+[
+"Single Superphosphate",
+0.9999
+],
+[
+"Neem Coated Urea",
+0.9997
+],
+[
+"83",
+0.9998
+],
+[
+"781",
+0.9998
+],
+[
+"289",
+0.9992
+],
+[
+"42",
+0.9999
+],
+[
+"650",
+0.9995
+],
+[
+"289",
+0.9995
+],
+[
+"781",
+0.9998
+],
+[
+"435",
+1.0
+],
+[
+"Muriate of Potash (M",
+0.9875
+],
+[
+"Muriate of Potash(M",
+0.9815
+],
+[
+"Muriate of Potash(M",
+0.9944
+],
+[
+" Diammonium Phos",
+0.9961
+],
+[
+"(kg/ha)",
+0.9934
+],
+[
+"Fertilizer Combinat",
+0.9978
+],
+[
+" Neem Coated Urea",
+0.9812
+],
+[
+"(16:44:0)",
+0.9989
+],
+[
+" Neem Coated Urea",
+0.9701
+],
+[
+"(16:44:0)",
+0.9983
+],
+[
+" Diammonium Phos",
+0.9777
+],
+[
+" Neem Coated Urea",
+0.9812
+],
+[
+"(16:44:0)",
+0.9985
+],
+[
+" Diammonium Phos",
+0.9819
+]
+]
+],
+"02_Central_Tasar_SHCs_redacted_2017.pdf": [
+[
+[
+"District.",
+0.9848
+],
+[
+"Village Address...",
+0.9515
+],
+[
+"Farmer'sName...",
+0.9271
+],
+[
+" Available Copper (Cu)",
+0.9672
+],
+[
+"Available Manganese (Mn)",
+0.9525
+],
+[
+" Available Iron (Fe)",
+0.9672
+],
+[
+" Available Boron (B",
+0.9917
+],
+[
+" Available Zinc (Zn)",
+0.9727
+],
+[
+"Available Sulphur (S)",
+0.9916
+],
+[
+" Available Potassium (K)",
+0.9871
+],
+[
+"Available Phosphorus (P)",
+0.9783
+],
+[
+"Available Nitrogen (N)",
+0.9629
+],
+[
+"pH",
+0.7748
+],
+[
+"Parameters",
+0.9993
+],
+[
+"SOIL TEST RESULTS",
+0.9736
+],
+[
+"CENTRAL TASAR RESEARCH AND TRAINING INSTITUTE,",
+0.9823
+],
+[
+"18.90",
+0.9998
+],
+[
+"180.3",
+0.9997
+],
+[
+"111.7",
+0.999
+],
+[
+"0.094",
+0.9998
+],
+[
+"Value",
+0.9974
+],
+[
+"9.30",
+0.9993
+],
+[
+"0.57",
+0.9993
+],
+[
+"6.37",
+0.9998
+],
+[
+"Test",
+0.9999
+],
+[
+"0.84",
+0.9998
+],
+[
+"1.80",
+0.9998
+],
+[
+"3.14",
+0.9998
+],
+[
+"0.18",
+0.9999
+],
+[
+"5.15",
+0.9997
+],
+[
+"kg ha-1",
+0.862
+],
+[
+"kg ha-1",
+0.9957
+],
+[
+"ppm",
+0.9906
+],
+[
+"ppm",
+0.9955
+],
+[
+"ppm",
+0.9978
+],
+[
+"ppm",
+0.9968
+],
+[
+"kgha-I",
+0.8685
+],
+[
+"ppm",
+0.9921
+],
+[
+" ppm",
+0.8897
+],
+[
+"dS m~1",
+0.8805
+],
+[
+"%",
+0.9996
+],
+[
+"Unit",
+0.9994
+],
+[
+"CENTRAL SILK BOARD",
+0.9983
+],
+[
+" Bangalore - 560 068",
+0.9372
+],
+[
+"SOIL HEALTH CARD",
+0.9306
+],
+[
+"Sutficient",
+0.921
+],
+[
+" Deticient",
+0.9525
+],
+[
+"Sufficient",
+0.946
+],
+[
+"Suffictent",
+0.8976
+],
+[
+"Deficient",
+0.9449
+],
+[
+"Medium",
+0.9988
+],
+[
+"Medium",
+0.9932
+],
+[
+"Low",
+0.9975
+],
+[
+"Low",
+0.9986
+],
+[
+"Low",
+0.997
+],
+[
+"Good",
+0.9992
+],
+[
+"Acidic",
+0.999
+],
+[
+"Rating",
+0.9991
+],
+[
+" RANCHI",
+0.939
+],
+[
+"Date of Soil Test Report:.",
+0.9717
+],
+[
+"Date of Soil Sample Received:",
+0.994
+],
+[
+" Organic Manure",
+0.9567
+],
+[
+"ZnSO4",
+0.9921
+],
+[
+"Muriate of Potash",
+0.9978
+],
+[
+"Single Super Phosphate",
+0.9816
+],
+[
+"Urea",
+0.9955
+],
+[
+"FERTILIZER RECOMMENDATION BASED ON SOIL TI",
+0.9669
+],
+[
+"12.5t/ha",
+0.9973
+],
+[
+" Required",
+0.943
+],
+[
+"Not",
+0.9906
+],
+[
+"Borax.",
+0.9252
+],
+[
+"Azotobacter @ 20kg/ha",
+0.9967
+],
+[
+"Micronutrients (kg/ha).",
+0.9765
+],
+[
+" along with 50 kg FYM",
+0.9854
+],
+[
+" Required",
+0.946
+],
+[
+"FeSO4",
+0.994
+],
+[
+"Not",
+0.9976
+],
+[
+"Macronutrients",
+0.9996
+],
+[
+"Soil Type.",
+0.9047
+],
+[
+" Biofertilizer",
+0.9707
+],
+[
+"\"",
+0.5033
+],
+[
+"28-12-2017",
+0.9989
+],
+[
+"18-11-2017",
+0.9974
+],
+[
+"83 kg/ha",
+0.9991
+],
+[
+"391 kg/ha",
+0.9998
+],
+[
+"326 kg/ha",
+0.998
+],
+[
+" MnSO4",
+0.9488
+],
+[
+"20",
+0.9991
+],
+[
+" Required",
+0.9626
+],
+[
+"Arjun/Asan.",
+0.9683
+],
+[
+"Rainfed",
+0.9114
+],
+[
+"Not",
+0.9206
+],
+[
+"CuSO4",
+0.9776
+],
+[
+"Lime @112",
+0.9675
+],
+[
+"{12 g/Tree",
+0.9491
+],
+[
+"(56 g/Tree)",
+0.9939
+],
+[
+"(47 g/Tree)",
+0.9478
+],
+[
+"kg/ha",
+0.9979
+]
+],
+[
+[
+"District.",
+0.9848
+],
+[
+"Village Address...",
+0.9515
+],
+[
+"Farmer'sName...",
+0.9271
+],
+[
+"Available Copper (Cu)",
+0.9885
+],
+[
+"AvailableManganese (Mn)",
+0.9721
+],
+[
+" Available Iron (Fe)",
+0.9454
+],
+[
+" Available Boron (B",
+0.9914
+],
+[
+"Available Zinc (Zn)",
+0.9953
+],
+[
+" Available Sulphur (S)",
+0.9694
+],
+[
+" Available Potassium (K)",
+0.974
+],
+[
+"Available Phosphorus (P)",
+0.9849
+],
+[
+"Available Nitrogen (N)",
+0.9623
+],
+[
+"Organic Carbon (OC)",
+0.9748
+],
+[
+"pH",
+0.9996
+],
+[
+"Parameters",
+0.9993
+],
+[
+"SOIL TEST RESULTS",
+0.9776
+],
+[
+"CENTRAL TASAR RESEARCH AND TRAINING INSTITUTE,",
+0.99
+],
+[
+"19.00",
+0.9995
+],
+[
+"203.8",
+0.9998
+],
+[
+"123.0",
+0.9996
+],
+[
+"0.096",
+0.9997
+],
+[
+"Value",
+0.9974
+],
+[
+"9.34",
+0.9999
+],
+[
+"6.68",
+0.9996
+],
+[
+"3.30",
+0.9985
+],
+[
+"0.48",
+0.9996
+],
+[
+"6.32",
+0.9995
+],
+[
+"Test",
+0.9999
+],
+[
+"0.28",
+0.9997
+],
+[
+"7.65",
+0.9999
+],
+[
+"0.27",
+0.9998
+],
+[
+"kg ha-1",
+0.8796
+],
+[
+"kg ha-1",
+0.9942
+],
+[
+"kg ha-I",
+0.8359
+],
+[
+"ppm",
+0.9939
+],
+[
+"ppm",
+0.9943
+],
+[
+"ppm",
+0.9981
+],
+[
+"ppm",
+0.9921
+],
+[
+"ppm",
+0.9994
+],
+[
+"ppm",
+0.9944
+],
+[
+"dS m~1",
+0.8596
+],
+[
+"%",
+0.9994
+],
+[
+"Unit",
+0.9994
+],
+[
+"CENTRAL SILK BOARD",
+0.9988
+],
+[
+" Bangalore - 560 068",
+0.9383
+],
+[
+"SOIL HEALTH CARD",
+0.9655
+],
+[
+"Sutficient",
+0.921
+],
+[
+"Sutficient",
+0.943
+],
+[
+"Sufficient",
+0.9545
+],
+[
+"Suffictent",
+0.8976
+],
+[
+"Deficient",
+0.9449
+],
+[
+"Medium",
+0.9982
+],
+[
+"Low",
+0.9975
+],
+[
+"Low",
+0.9985
+],
+[
+"Good",
+0.9996
+],
+[
+"Acidic",
+0.9988
+],
+[
+"Rating",
+0.9991
+],
+[
+"Low",
+0.9992
+],
+[
+"Low",
+0.9763
+],
+[
+" RANCHI",
+0.939
+],
+[
+"Date of Soil Test Report:",
+0.9913
+],
+[
+"Date of Soil Sample Received:",
+0.9939
+],
+[
+" Organic Manure",
+0.9567
+],
+[
+"ZnSO4",
+0.9948
+],
+[
+"Muriate of Potash",
+0.9989
+],
+[
+" Single Super Phosphate",
+0.9837
+],
+[
+"Urea",
+0.9968
+],
+[
+"FERTILIZER RECOMMENDATION BASED ON SOIL TI",
+0.9669
+],
+[
+"12.5t/ha",
+0.9973
+],
+[
+"1",
+0.6516
+],
+[
+" Required",
+0.9435
+],
+[
+"Not",
+0.9906
+],
+[
+"Borax.",
+0.9252
+],
+[
+" along with 50 kg FYM",
+0.9807
+],
+[
+"Azotobacter @ 20kg/ha",
+0.9956
+],
+[
+"Micronutrients (kg/ha)",
+0.9996
+],
+[
+" Reguired",
+0.8519
+],
+[
+"FeSO4",
+0.9724
+],
+[
+"Not",
+0.9977
+],
+[
+"Macronutrients",
+0.9996
+],
+[
+"Soil Type.",
+0.9047
+],
+[
+" Biofertilizer",
+0.9151
+],
+[
+"\"",
+0.5033
+],
+[
+"28-12-2017",
+0.9989
+],
+[
+" 18-11-2017",
+0.9786
+],
+[
+" Required",
+0.9058
+],
+[
+"83 kg/ha",
+0.9991
+],
+[
+"469 kg/ha",
+0.9998
+],
+[
+"326 kg/ha",
+0.9977
+],
+[
+" MnSO4",
+0.9297
+],
+[
+"Not",
+0.9958
+],
+[
+" Required",
+0.9465
+],
+[
+"Arjun/Asan.",
+0.9683
+],
+[
+"Rainfed",
+0.9114
+],
+[
+"Not",
+0.9206
+],
+[
+"CuSO4",
+0.9756
+],
+[
+"Lime @ 112!",
+0.9355
+],
+[
+"{12 g/Tree",
+0.9491
+],
+[
+"(67 g/Tree)",
+0.966
+],
+[
+"(47 g/Tree)",
+0.9698
+],
+[
+"kg/ha",
+0.9958
+]
+],
+[
+[
+"District.",
+0.9848
+],
+[
+"Village Address...",
+0.9515
+],
+[
+"Farmer'sName...",
+0.9271
+],
+[
+" Available Copper (Cu)",
+0.9717
+],
+[
+"Available Manganese (Mn)",
+0.9545
+],
+[
+" Available Iron (Fe)",
+0.9709
+],
+[
+" Available Boron (B",
+0.9921
+],
+[
+" Available Zinc (Zn)",
+0.9681
+],
+[
+"Available Sulphur (S)",
+0.9917
+],
+[
+" Available Potassium (K)",
+0.987
+],
+[
+"Available Phosphorus (P)",
+0.9783
+],
+[
+"Available Nitrogen (N)",
+0.9666
+],
+[
+"Organic Carbon (OC)",
+0.9748
+],
+[
+"pH",
+0.9996
+],
+[
+"Parameters",
+0.9993
+],
+[
+"SOIL TEST RESULTS",
+0.9769
+],
+[
+"CENTRAL TASAR RESEARCH AND TRAINING INSTITUTE,",
+0.99
+],
+[
+"15.70",
+0.9996
+],
+[
+"191.5",
+0.9994
+],
+[
+"14.20",
+0.9998
+],
+[
+"120.5",
+0.9043
+],
+[
+"0.046",
+0.9998
+],
+[
+"Value",
+0.9978
+],
+[
+"4.50",
+0.9997
+],
+[
+"0.33",
+0.9992
+],
+[
+"5.23",
+0.9996
+],
+[
+"Test",
+0.9999
+],
+[
+"0.26",
+0.9997
+],
+[
+"6.30",
+0.9991
+],
+[
+"1.43",
+1.0
+],
+[
+"0.37",
+0.9999
+],
+[
+"kg ha-1",
+0.8357
+],
+[
+"kg ha-1",
+0.8868
+],
+[
+"kg ha-",
+0.9029
+],
+[
+"ppm",
+0.9906
+],
+[
+"ppm",
+0.9943
+],
+[
+"ppm",
+0.9978
+],
+[
+"ppm",
+0.9893
+],
+[
+"ppm",
+0.9994
+],
+[
+"ppm",
+0.9957
+],
+[
+"dS m~1",
+0.8656
+],
+[
+"%",
+0.9994
+],
+[
+"Unit",
+0.9994
+],
+[
+"CENTRAL SILK BOARD",
+0.9983
+],
+[
+" Bangalore - 560 068",
+0.9367
+],
+[
+"SOIL HEALTH CARD",
+0.977
+],
+[
+"Sutficient",
+0.921
+],
+[
+"Sutficient",
+0.9424
+],
+[
+"Sufficient",
+0.9817
+],
+[
+"Suffictent",
+0.8976
+],
+[
+"Deticient",
+0.9559
+],
+[
+"Medium",
+0.9987
+],
+[
+"Medium",
+0.9997
+],
+[
+"Low",
+0.9949
+],
+[
+"Low",
+0.9986
+],
+[
+"Good",
+0.9996
+],
+[
+"Acidic",
+0.9967
+],
+[
+"Rating",
+0.9991
+],
+[
+"Low",
+0.9775
+],
+[
+" RANCHI",
+0.939
+],
+[
+"Date of Soil Test Report:",
+0.9924
+],
+[
+"Date of Soil Sample Received:",
+0.9985
+],
+[
+" Organic Manure",
+0.9567
+],
+[
+"ZnSO4",
+0.9948
+],
+[
+"Muriate of Potash",
+0.9989
+],
+[
+" Single Super Phosphate",
+0.9909
+],
+[
+"Urea",
+0.9968
+],
+[
+"FERTILIZER RECOMMENDATION BASED ON SOIL TI",
+0.9517
+],
+[
+"12.5t/ha",
+0.9973
+],
+[
+" Required",
+0.9435
+],
+[
+"Not",
+0.9906
+],
+[
+"Borax.",
+0.9577
+],
+[
+" along with 50 kg FYM",
+0.9715
+],
+[
+"Azotobacter @ 20kg/ha",
+0.995
+],
+[
+"Micronutrients (kg/ ha)",
+0.9644
+],
+[
+" Required",
+0.9414
+],
+[
+"FeSO4",
+0.9724
+],
+[
+"Not",
+0.9977
+],
+[
+"Macronutrients",
+0.9809
+],
+[
+"Soil Type.",
+0.9047
+],
+[
+" Biofertilizer",
+0.9752
+],
+[
+"28-12-2017",
+0.9989
+],
+[
+" 18-11-2017",
+0.9665
+],
+[
+" Required",
+0.9597
+],
+[
+"83 kg/ha",
+0.9991
+],
+[
+"312 kg/ha",
+0.9998
+],
+[
+"326 kg/ha",
+0.9979
+],
+[
+" MnSO4",
+0.9226
+],
+[
+"Not",
+0.9964
+],
+[
+" Required",
+0.9464
+],
+[
+"Arjun/Asan.",
+0.9687
+],
+[
+"Rainfed",
+0.9114
+],
+[
+"Not",
+0.9206
+],
+[
+"CuSO4",
+0.9756
+],
+[
+"Lime @ 112",
+0.9521
+],
+[
+"{12 g/Tree",
+0.9491
+],
+[
+"(45 g/Tree)",
+0.9662
+],
+[
+"(47 g/Tree)",
+0.9698
+],
+[
+"kg/ha",
+0.9959
+]
+],
+[
+[
+"-",
+0.585
+],
+[
+"District",
+0.9982
+],
+[
+"Village Address",
+0.9837
+],
+[
+"Available Copper (Cu)",
+0.9969
+],
+[
+"Available Manganese (Mn)",
+0.9805
+],
+[
+" Available Iron (Fe)",
+0.9763
+],
+[
+" Available Boron (B",
+0.9711
+],
+[
+"Available Zinc (Zn)",
+0.9875
+],
+[
+" Available Sulphur (S)",
+0.9664
+],
+[
+"Available Potassium (K)",
+0.985
+],
+[
+"Available Phosphorus (P)",
+0.9776
+],
+[
+" Available Nitrogen (N)",
+0.9688
+],
+[
+"Organic Carbon (OC)",
+0.9726
+],
+[
+"EC",
+0.9424
+],
+[
+"Parameters",
+0.9998
+],
+[
+" SOIL TEST RESULTS",
+0.9897
+],
+[
+"CENTRAL TASAR RESEARCH AND TRAINING INSTITUTE",
+0.9942
+],
+[
+"13.50",
+0.9997
+],
+[
+"12.50",
+0.9996
+],
+[
+"123.2",
+0.9998
+],
+[
+"4.80 kg ha1",
+0.9546
+],
+[
+"126.8",
+0.9996
+],
+[
+"0.063",
+0.9997
+],
+[
+"Value",
+0.9983
+],
+[
+"6.11",
+0.9994
+],
+[
+"6.90",
+0.9995
+],
+[
+"0.33",
+0.9992
+],
+[
+"5.28",
+0.9995
+],
+[
+"Test",
+0.9994
+],
+[
+"0.09",
+0.9996
+],
+[
+"0.44",
+0.9999
+],
+[
+"kg ha-",
+0.9428
+],
+[
+"kg ha-",
+0.8911
+],
+[
+"Ministry of Textiles - Govt. Of India",
+0.9794
+],
+[
+"ppm",
+0.9981
+],
+[
+"ppm",
+0.9965
+],
+[
+"ppm",
+0.9986
+],
+[
+"ppm",
+0.98
+],
+[
+"ppm",
+0.9994
+],
+[
+"ppm",
+0.9962
+],
+[
+"dS m-1",
+0.9178
+],
+[
+"%",
+0.9992
+],
+[
+"Unit",
+0.9997
+],
+[
+"CENTRAL SILK BOARD",
+0.997
+],
+[
+" Bangalore - 560068",
+0.9612
+],
+[
+" SOIL HEALTH CARD",
+0.9449
+],
+[
+" Deticlent",
+0.9252
+],
+[
+"Sufficlent",
+0.936
+],
+[
+" Sufficient",
+0.964
+],
+[
+"Sufficient",
+0.9904
+],
+[
+" Deficient",
+0.9411
+],
+[
+"Medium",
+0.9994
+],
+[
+"Low",
+0.9945
+],
+[
+"Low",
+0.9951
+],
+[
+"Good",
+0.998
+],
+[
+"Acidic",
+0.9993
+],
+[
+"Rating",
+0.9989
+],
+[
+"Low",
+0.9934
+],
+[
+"Low",
+0.9988
+],
+[
+"RANCHI",
+0.9995
+],
+[
+"Date of Soil Test Report:",
+0.9969
+],
+[
+"Date of Soil Sample Received:",
+0.9937
+],
+[
+" Organic Manure",
+0.9653
+],
+[
+"ZnSO4",
+0.9973
+],
+[
+"Muriate of Potash",
+0.924
+],
+[
+"Single Super Phosphate",
+0.9975
+],
+[
+"Urea",
+0.9897
+],
+[
+"FERTILIZER RECOMMENDATION BASED ON SOIL T",
+0.9633
+],
+[
+"12.5t/ha",
+0.9996
+],
+[
+"Required",
+0.9988
+],
+[
+"1ON",
+0.6097
+],
+[
+"Borax",
+0.9711
+],
+[
+"General Recommendation",
+0.9787
+],
+[
+"Azotobacter @ 20kg/ha",
+0.9957
+],
+[
+"Micronutrients (kg/ha)",
+0.9991
+],
+[
+" along with 50 kg FYM",
+0.9584
+],
+[
+" Required",
+0.9432
+],
+[
+"FeSO4",
+0.9916
+],
+[
+"1oN",
+0.588
+],
+[
+"Macronutrients",
+0.9664
+],
+[
+"Soil Type",
+0.9933
+],
+[
+"Biofertilizer",
+0.9737
+],
+[
+"*.",
+0.6779
+],
+[
+"28-12-2017",
+0.9983
+],
+[
+" 18-11-2017",
+0.975
+],
+[
+" Required",
+0.9545
+],
+[
+"83 kg/ha",
+0.9974
+],
+[
+"469 kg/ha",
+0.9716
+],
+[
+" MnSO4",
+0.9509
+],
+[
+"326 kg/ha",
+0.9972
+],
+[
+"JoN",
+0.5959
+],
+[
+"**",
+0.6476
+],
+[
+"CuSO4",
+0.999
+],
+[
+"Arjun/Asan",
+0.9998
+],
+[
+"Rainfed",
+0.9551
+],
+[
+"Lime/Gypst",
+0.9796
+],
+[
+"10",
+0.9992
+],
+[
+"{12 g/Tree",
+0.9778
+],
+[
+"67 8/Tree",
+0.92
+],
+[
+"Lime @ 112",
+0.9523
+],
+[
+"{47 /Tree",
+0.9604
+],
+[
+"kg/ha",
+0.999
+],
+[
+"T",
+0.7334
+]
+]
+]
+}
+}

@@ -112,3 +112,44 @@ TASAR_SHC_SAMPLE_4_EXPECTED = {
     "manganese": 13.50,
     "copper": 0.09,
 }
+
+# SHC-TASAR-2017 samples #2 and #3 — transcribed by hand from the rendered
+# pages of datasets/ocr_calibration/02_Central_Tasar_SHCs_redacted_2017.pdf
+# (pages 2 and 3), independently of any OCR output.
+TASAR_SHC_SAMPLE_2_EXPECTED = {
+    "ph": 6.32,
+    "ec": 0.096,
+    "organic_carbon": 0.48,
+    "nitrogen": 123.0,
+    "phosphorus": 3.30,
+    "potassium": 203.8,
+    "sulphur": 6.68,
+    "zinc": 0.27,
+    "boron": 9.34,
+    "iron": 19.00,
+    "manganese": 7.65,
+    "copper": 0.28,
+}
+
+TASAR_SHC_SAMPLE_3_EXPECTED = {
+    "ph": 5.23,
+    "ec": 0.046,
+    "organic_carbon": 0.33,
+    "nitrogen": 120.5,
+    "phosphorus": 14.20,
+    "potassium": 191.5,
+    "sulphur": 4.50,
+    "zinc": 0.37,
+    "boron": 1.43,
+    "iron": 15.70,
+    "manganese": 6.30,
+    "copper": 0.26,
+}
+
+# Page-by-page ground truth for the Tasar PDF (one farmer card per page).
+TASAR_SHC_PAGES_EXPECTED = [
+    TASAR_SHC_SAMPLE_1_EXPECTED,
+    TASAR_SHC_SAMPLE_2_EXPECTED,
+    TASAR_SHC_SAMPLE_3_EXPECTED,
+    TASAR_SHC_SAMPLE_4_EXPECTED,
+]

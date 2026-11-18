@@ -20,5 +20,10 @@ mobile
 docs
 deployment
 
+# Original Paddle-format OCR weights: only used by the optional
+# OCR_BACKEND=paddle engine, which is not installed in this image. The
+# runtime uses ml/paddleocr_models/onnx/.
+ml/paddleocr_models/whl
+
 .DS_Store
 **/.DS_Store

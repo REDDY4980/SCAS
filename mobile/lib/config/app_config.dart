@@ -27,11 +27,17 @@ class AppConfig {
   // <=5s, but multi-page real-world scans plus network latency warrant
   // headroom beyond the pure-processing budget).
   static const Duration uploadTimeout = Duration(seconds: 30);
-  // The OCR trigger call runs the actual PaddleOCR inference server-side
-  // (not just a byte transfer like uploadTimeout above) — its first
-  // invocation per backend process also pays a one-time model cold-start
-  // cost, which can run well past uploadTimeout's 30s.
-  static const Duration ocrTimeout = Duration(seconds: 90);
+  // The OCR trigger call runs the actual OCR inference server-side (not
+  // just a byte transfer like uploadTimeout above). Measured on a
+  // container limited like Render's free tier (0.1 CPU, 512 MB): ~130 s
+  // per report page, and the backend accepts up to 5 pages (plus a short
+  // wait if another report is being read). The backend never runs two
+  // OCR jobs at once, so this is a ceiling, not a typical wait.
+  static const Duration ocrTimeout = Duration(minutes: 15);
+  // While a report is still being read server-side (after a dropped
+  // connection, a client timeout or a "409 already processing"), the
+  // analysis screen re-checks the report at this interval.
+  static const Duration ocrPollInterval = Duration(seconds: 10);
 
   static const int maxUploadSizeMb = 10; // must match backend MAX_UPLOAD_SIZE_MB (Vol 16.5)
 }

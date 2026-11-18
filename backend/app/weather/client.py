@@ -19,7 +19,14 @@ import httpx
 
 from app.core.config import get_settings
 
-_REQUEST_TIMEOUT_SECONDS = 2.0  # Vol 8.12: weather retrieval <=2s target
+# Vol 8.12 targets <=2 s retrieval, but on Render's free tier (0.1 CPU) a
+# fresh TLS connection alone can take seconds; a 2 s cap there turns a
+# slow-but-working provider into "weather unavailable". Results are cached
+# for 30 minutes (Vol 8.10), so a slower fetch is rare.
+_REQUEST_TIMEOUT_SECONDS = 8.0
+# Rainfall for the crop model is the total of the last 30 complete days
+# (see normalizer.normalize_open_meteo), fetched in the same request.
+RAINFALL_WINDOW_DAYS = 30
 
 
 class WeatherProviderError(Exception):
@@ -54,9 +61,10 @@ class OpenMeteoClient(WeatherProviderClient):
             "latitude": latitude,
             "longitude": longitude,
             "current": "temperature_2m,relative_humidity_2m,wind_speed_10m,cloud_cover,precipitation",
-            "daily": "rain_sum",
+            "daily": "rain_sum,precipitation_sum",
             "timezone": "auto",
             "forecast_days": 1,
+            "past_days": RAINFALL_WINDOW_DAYS,
         }
         try:
             response = httpx.get(url, params=params, timeout=_REQUEST_TIMEOUT_SECONDS)
@@ -66,6 +74,8 @@ class OpenMeteoClient(WeatherProviderClient):
             raise WeatherProviderError(f"Open-Meteo request timed out: {exc}") from exc
         except httpx.HTTPError as exc:
             raise WeatherProviderError(f"Open-Meteo request failed: {exc}") from exc
+        except ValueError as exc:  # body is not JSON
+            raise WeatherProviderError(f"Open-Meteo response was not JSON: {exc}") from exc
 
         if data.get("error"):
             raise WeatherProviderError(f"Open-Meteo returned an error: {data.get('reason')}")
